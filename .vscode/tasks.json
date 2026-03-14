@@ -1,0 +1,52 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build-api",
+      "command": "dotnet",
+      "type": "shell",
+      "args": ["build", "LecturerManager.Api/LecturerManager.Api.csproj"],
+      "problemMatcher": "$msCompile",
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false
+      }
+    },
+    {
+      "label": "serve-frontend",
+      "command": "cmd",
+      "type": "shell",
+      "args": ["/c", "cd lecturer-manager-frontend && ng serve --open=false"],
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^.*$",
+          "file": 1,
+          "location": 2,
+          "message": 3
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^\\s*Angular 18+ development server.*",
+          "endsPattern": "^\\s*Application bundle generation complete\\."
+        }
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "silent",
+        "focus": false
+      }
+    },
+    {
+      "label": "build-and-serve",
+      "dependsOn": ["build-api", "serve-frontend"],
+      "problemMatcher": [],
+      "presentation": {
+        "echo": false,
+        "reveal": "silent",
+        "focus": false
+      }
+    }
+  ]
+}

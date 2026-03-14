@@ -1,0 +1,36 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": ".NET API",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-api",
+      "program": "${workspaceFolder}/LecturerManager.Api/bin/Debug/net10.0/LecturerManager.Api.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/LecturerManager.Api",
+      "stopAtEntry": false,
+      "serverReadyAction": {
+        "pattern": "\\bNow listening on:\\s+(https?://\\S+)",
+        "uriFormat": "%s",
+        "action": "openExternally"
+      }
+    },
+    {
+      "name": "Angular Frontend",
+      "type": "chrome",
+      "request": "launch",
+      "preLaunchTask": "serve-frontend",
+      "url": "http://localhost:4200",
+      "webRoot": "${workspaceFolder}/lecturer-manager-frontend/src",
+      "sourceMaps": true,
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Full Stack (API + Frontend)",
+      "configurations": [".NET API", "Angular Frontend"],
+      "stopAll": true
+    }
+  ]
+}

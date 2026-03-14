@@ -1,0 +1,7 @@
+{
+  "[csharp]": {
+    "editor.defaultFormatter": "ms-dotnettools.csharp"
+  },
+  "dotnet.defaultSolutionOrFolder": "LecturerManager.slnx",
+  "FSharp.suggestGitignore": false
+}

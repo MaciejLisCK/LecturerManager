@@ -64,7 +64,8 @@
               "buildTarget": "lecturer-manager-frontend:build:production"
             },
             "development": {
-              "buildTarget": "lecturer-manager-frontend:build:development"
+              "buildTarget": "lecturer-manager-frontend:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
