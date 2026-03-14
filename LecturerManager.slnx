@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="LecturerManager.Api/LecturerManager.Api.csproj" />
+  <Project Path="LecturerManager.Application/LecturerManager.Application.csproj" />
+  <Project Path="LecturerManager.Domain/LecturerManager.Domain.csproj" />
+  <Project Path="LecturerManager.Infrastructure/LecturerManager.Infrastructure.csproj" />
+</Solution>

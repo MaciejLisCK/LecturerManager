@@ -1,0 +1,12 @@
+# .NET build artifacts
+**/bin/
+**/obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+lecturer-manager-frontend/node_modules/
+lecturer-manager-frontend/dist/
+lecturer-manager-frontend/.angular/
+lecturer-manager-frontend/.vscode/
