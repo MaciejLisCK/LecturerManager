@@ -1,11 +1,11 @@
-namespace LecturerManager.Domain.CourseManagment;
+namespace LecturerManager.Domain.CourseManagment.Entities;
 
 public class AssignmentItem
 {
     public Guid Id { get; init; }
     public string Name { get; private set; }
 
-    private AssignmentItem() { }
+    protected AssignmentItem() { }
 
     public AssignmentItem(string name)
     {

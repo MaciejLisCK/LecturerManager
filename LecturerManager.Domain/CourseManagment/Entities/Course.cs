@@ -1,4 +1,4 @@
-namespace LecturerManager.Domain.CourseManagment;
+namespace LecturerManager.Domain.CourseManagment.Entities;
 
 public class Course
 {

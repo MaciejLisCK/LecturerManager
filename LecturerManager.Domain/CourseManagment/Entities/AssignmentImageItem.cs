@@ -1,4 +1,4 @@
-using LecturerManager.Domain.CourseManagment;
+using LecturerManager.Domain.CourseManagment.Entities;
 
 public class AssignmentImageItem : AssignmentItem
 {

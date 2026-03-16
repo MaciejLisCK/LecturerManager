@@ -1,16 +1,14 @@
-namespace LecturerManager.Domain.CourseManagment;
+namespace LecturerManager.Domain.CourseManagment.Entities;
 
 public class Assignment
 {
     public Guid Id { get; init; }
     public Guid CourseId { get; init; }
 
-
     public Course Course { get; private set; } = null!;
 
     private readonly List<AssignmentItem> _assignmentItems = [];
-    public IReadOnlyList<AssignmentItem> AssignmentItemDefinitions { get; };
-
+    public IReadOnlyList<AssignmentItem> AssignmentItemDefinitions { get; }
 
     private Assignment() { }
 
