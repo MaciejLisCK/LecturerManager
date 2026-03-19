@@ -5,6 +5,7 @@
 *.suo
 *.userosscache
 *.sln.docstates
+.vs/
 
 lecturer-manager-frontend/node_modules/
 lecturer-manager-frontend/dist/

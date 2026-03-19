@@ -1,12 +1,14 @@
-using LecturerManager.Domain.CourseManagment.Entities;
+using LecturerManager.Domain.CourseManagment.ValueObjects;
+
+namespace LecturerManager.Domain.CourseManagment.Entities;
 
 public class AssignmentImageItem : AssignmentItem
 {
-    public string ImageUrl { get; private set; }
+    public ImageUrl ImageUrl { get; private set; }
 
     private AssignmentImageItem() { }
 
-    public AssignmentImageItem(string name, string imageUrl)
+    public AssignmentImageItem(AssignmentItemName name, ImageUrl imageUrl)
         : base(name)
     {
         ImageUrl = imageUrl;

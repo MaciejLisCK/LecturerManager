@@ -47,6 +47,83 @@
         "reveal": "silent",
         "focus": false
       }
+    },
+    {
+      "label": "ef-add-migration",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "ef",
+        "migrations",
+        "add",
+        "${input:migrationName}",
+        "--project",
+        "LecturerManager.Infrastructure/LecturerManager.Infrastructure.csproj",
+        "--startup-project",
+        "LecturerManager.Api/LecturerManager.Api.csproj",
+        "--context",
+        "ApplicationDbContext",
+        "--output-dir",
+        "Persistence/Migrations"
+      ],
+      "problemMatcher": "$msCompile",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true
+      }
+    },
+    {
+      "label": "ef-update-database",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "ef",
+        "database",
+        "update",
+        "--project",
+        "LecturerManager.Infrastructure/LecturerManager.Infrastructure.csproj",
+        "--startup-project",
+        "LecturerManager.Api/LecturerManager.Api.csproj",
+        "--context",
+        "ApplicationDbContext"
+      ],
+      "problemMatcher": "$msCompile",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true
+      }
+    },
+    {
+      "label": "ef-remove-last-migration",
+      "type": "shell",
+      "command": "dotnet",
+      "args": [
+        "ef",
+        "migrations",
+        "remove",
+        "--project",
+        "LecturerManager.Infrastructure/LecturerManager.Infrastructure.csproj",
+        "--startup-project",
+        "LecturerManager.Api/LecturerManager.Api.csproj",
+        "--context",
+        "ApplicationDbContext"
+      ],
+      "problemMatcher": "$msCompile",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "migrationName",
+      "type": "promptString",
+      "description": "Podaj nazwe migracji (np. AddCourseTable)",
+      "default": "Init"
     }
   ]
 }

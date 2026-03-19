@@ -1,12 +1,14 @@
-using LecturerManager.Domain.CourseManagment.Entities;
+using LecturerManager.Domain.CourseManagment.ValueObjects;
+
+namespace LecturerManager.Domain.CourseManagment.Entities;
 
 public class AssignmentTextItem : AssignmentItem
 {
-    public string Text { get; private set; }
+    public AssignmentTextItemText Text { get; private set; }
     
     private AssignmentTextItem() { }
 
-    public AssignmentTextItem(string name, string text)
+    public AssignmentTextItem(AssignmentItemName name, AssignmentTextItemText text)
         : base(name)
     {
         Text = text;
