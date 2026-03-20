@@ -1,4 +1,4 @@
-using LecturerManager.Domain.CourseManagment.Entities;
+using LecturerManager.Domain.CourseManagement.Entities;
 using LecturerManager.Infrastructure.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
 

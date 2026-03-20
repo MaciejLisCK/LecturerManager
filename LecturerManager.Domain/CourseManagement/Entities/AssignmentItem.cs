@@ -1,6 +1,6 @@
-using LecturerManager.Domain.CourseManagment.ValueObjects;
+using LecturerManager.Domain.CourseManagement.ValueObjects;
 
-namespace LecturerManager.Domain.CourseManagment.Entities;
+namespace LecturerManager.Domain.CourseManagement.Entities;
 
 public class AssignmentItem
 {

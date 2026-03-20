@@ -1,10 +1,14 @@
 LecturerManager.sln
 ├── 1. LecturerManager.Domain        (Zależności: BRAK)
-│   ├── Entities               (Agregaty i Encje)
-│   ├── ValueObjects           (Obiekty wartości, np. Money, Address)
-│   ├── Events                 (Zdarzenia domenowe)
-│   ├── Exceptions             (Błędy biznesowe)
-│   └── Interfaces             (Interfejsy repozytoriów)
+│   ├── BoundedContext1
+│   │   ├── Entities               (Agregaty i Encje)
+│   │   ├── ValueObjects           (Obiekty wartości, np. Money, Address)
+│   │   ├── Events                 (Zdarzenia domenowe)
+│   │   ├── Exceptions             (Błędy biznesowe)
+│   │   └── Interfaces             (Interfejsy repozytoriów)
+│   ├── Shared
+│   │   ├── Exceptions             (Błędy biznesowe)
+│   │   └── ...
 │
 ├── 2. LecturerManager.Application   (Zależności: Domain)
 │   ├── DTOs                   (Obiekty transferu danych)

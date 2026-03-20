@@ -1,4 +1,4 @@
-namespace LecturerManager.Domain.CourseManagment.ValueObjects;
+namespace LecturerManager.Domain.CourseManagement.ValueObjects;
 
 public record CourseName
 {
