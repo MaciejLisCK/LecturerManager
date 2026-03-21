@@ -5,7 +5,7 @@ namespace LecturerManager.Domain.CourseManagement.ValueObjects;
 public record ImageUrl
 {
     private const int MaxLength = 300;
-    
+
     public string Value { get; }
 
     private ImageUrl() { }
@@ -16,6 +16,7 @@ public record ImageUrl
         var valueTrimmed = value.Trim();
         DomainStringEmptyException.ThrowIfEmpty(valueTrimmed);
         DomainStringLengthExceededException.ThrowIfLengthExceeded(valueTrimmed, MaxLength);
+        DomainUrlFormatException.ThrowIfInvalidFormat(valueTrimmed);
 
         Value = valueTrimmed;
     }
