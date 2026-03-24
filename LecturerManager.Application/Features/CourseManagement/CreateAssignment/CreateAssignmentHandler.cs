@@ -13,8 +13,10 @@ public class CreateAssignmentHandler(ICourseRepository courseRepository, IUnitOf
         if (request.CourseId == Guid.Empty)
             throw new ArgumentException("CourseId cannot be empty.", nameof(request.CourseId));
 
-        Course course = await courseRepository.GetByIdAsync(request.CourseId, cancellationToken)
-            ?? throw new InvalidOperationException($"Course with ID '{request.CourseId}' was not found.");
+        var course = await courseRepository.GetByIdAsync(request.CourseId, cancellationToken);
+        
+        if (course == null)
+            throw new InvalidOperationException($"Course with ID '{request.CourseId}' was not found.");
 
         var assignmentName = new AssignmentName(request.Name);
         var assignmentId = course.AddAssignment(assignmentName);
