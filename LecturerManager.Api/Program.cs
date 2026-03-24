@@ -1,4 +1,8 @@
+using LecturerManager.Application;
+using LecturerManager.Domain.CourseManagement.Interfaces;
+using LecturerManager.Domain.Shared.Interfaces;
 using LecturerManager.Infrastructure.Persistence;
+using LecturerManager.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +12,9 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' was not found.");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+builder.Services.AddScoped<IUnitOfWork, EfUnitOfWork>();
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ApplicationAssemblyMarker).Assembly));
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular",

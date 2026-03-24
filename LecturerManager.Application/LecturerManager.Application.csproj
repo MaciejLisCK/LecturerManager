@@ -6,4 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="14.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LecturerManager.Domain\LecturerManager.Domain.csproj" />
+    <ProjectReference Include="..\LecturerManager.Infrastructure\LecturerManager.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

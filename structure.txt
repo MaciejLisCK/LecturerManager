@@ -4,19 +4,20 @@ LecturerManager.sln
 │   │   ├── Entities               (Agregaty i Encje)
 │   │   ├── ValueObjects           (Obiekty wartości, np. Money, Address)
 │   │   ├── Events                 (Zdarzenia domenowe)
-│   │   ├── Exceptions             (Błędy biznesowe)
-│   │   └── Interfaces             (Interfejsy repozytoriów)
+│   │   └── Exceptions             (Błędy biznesowe)
 │   ├── Shared
 │   │   ├── Exceptions             (Błędy biznesowe)
+│   │   ├── Interfaces             (Interfejsy repozytoriów)
 │   │   └── ...
 │
 ├── 2. LecturerManager.Application   (Zależności: Domain)
 │   ├── DTOs                   (Obiekty transferu danych)
 │   ├── Interfaces             (Abstrakcje serwisów zewn.)
-│   └── Orders                 (Foldery per moduł)
-│       ├── Commands           (np. CreateOrderCommand)
-│       └── Queries            (np. GetOrderByIdQuery)
-│
+│   └── Features
+|       ├── Orders                 (Foldery per moduł)
+│       │   ├── Commands           (np. CreateOrderCommand)
+│       │   └── Queries            (np. GetOrderByIdQuery)
+│       └── ...
 ├── 3. LecturerManager.Infrastructure (Zależności: Application, Domain, EF Core)
 │   ├── Persistence            (DbContext, Konfiguracje EF Core)
 │   ├── Repositories           (Implementacja interfejsów z Domeny)
