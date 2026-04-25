@@ -4,7 +4,7 @@ using LecturerManager.Domain.CourseManagement.ValueObjects;
 using LecturerManager.Domain.Shared.Interfaces;
 using MediatR;
 
-namespace LecturerManager.Application.Features.CourseManagement.CreateAssignment;
+namespace LecturerManager.Application.CourseManagement.Features.CreateAssignment;
 
 public class CreateAssignmentHandler(ICourseRepository courseRepository, IUnitOfWork unitOfWork) : IRequestHandler<CreateAssignmentCommand, Guid>
 {
