@@ -4,7 +4,7 @@ using MediatR;
 
 namespace LecturerManager.Application.Features.CourseManagement.GetCourses;
 
-public class GetCoursesHandler(ICourseRepository courseRepository) : IRequestHandler<GetCoursesQuery, Course[]>
+public class GetCoursesHandler(ICourseRepository courseRepository) : IRequestHandler<GetCoursesQuery, IReadOnlyList<Course>>
 {
     public async Task<IReadOnlyList<Course>> Handle(GetCoursesQuery request, CancellationToken cancellationToken)
     {
