@@ -3,4 +3,4 @@ using MediatR;
 
 namespace LecturerManager.Application.Features.CourseManagement.GetCourses;
 
-public record GetCoursesQuery() : IRequest<Course[]>;
+public record GetCoursesQuery() : IRequest<IReadOnlyList<Course>>;
