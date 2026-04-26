@@ -11,11 +11,11 @@ LecturerManager.sln
 │   │   └── ...
 │
 ├── 2. LecturerManager.Application   (Zależności: Domain)
-│   ├── DTOs                   (Obiekty transferu danych)
 │   ├── Interfaces             (Abstrakcje serwisów zewn.)
 │   └── Features
 |       ├── Orders                 (Foldery per moduł)
 │       │   ├── Commands           (np. CreateOrderCommand)
+│       │   ├── DTOs                   (Obiekty transferu danych)
 │       │   └── Queries            (np. GetOrderByIdQuery)
 │       └── ...
 ├── 3. LecturerManager.Infrastructure (Zależności: Application, Domain, EF Core)
