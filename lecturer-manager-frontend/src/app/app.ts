@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { WeatherService } from './services/weather.service';
 import { JsonPipe } from '@angular/common';
+import { CoursesService } from './services/courses.service';
 
 @Component({
   selector: 'app-root',
@@ -12,13 +12,13 @@ import { JsonPipe } from '@angular/common';
 export class App implements OnInit {
   protected readonly title = signal('lecturer-manager-frontend');
 
-  weatherForecast = signal<any>(null);
+  courses = signal<any>(null);
 
-  constructor(private weatherService: WeatherService) {}
+  constructor(private coursesService: CoursesService) {}
 
   ngOnInit() {
-    this.weatherService.getWeatherForecast().subscribe(
-      (data) => this.weatherForecast.set(data),
+    this.coursesService.getCourses().subscribe(
+      (data) => this.courses.set(data),
       (error) => console.error('API error:', error)
     );
   }
