@@ -1,7 +1,5 @@
 using LecturerManager.Application;
-using LecturerManager.Application.DTOs.Common;
-using LecturerManager.Application.DTOs.CourseManagement.Responses;
-using LecturerManager.Application.Features.CourseManagement.GetCourses;
+using LecturerManager.Application.Features.CourseManagement.Queries.GetCourses;
 using LecturerManager.Domain.CourseManagement.Interfaces;
 using LecturerManager.Domain.Shared.Interfaces;
 using LecturerManager.Infrastructure.Persistence;
@@ -44,14 +42,9 @@ app.UseHttpsRedirection();
 app.MapGet("/courses", async (ISender sender, CancellationToken cancellationToken) =>
 {
     var courses = await sender.Send(new GetCoursesQuery(), cancellationToken);
-    return Results.Ok(ApiResponse<IReadOnlyList<CourseResponseDto>>.SuccessResponse(
-        courses, 
-        "Courses retrieved successfully"
-    ));
+    return courses;
 })
-.WithName("GetCourses")
-.WithOpenApi()
-.WithDescription("Get all courses with their assignments and items");
+.WithName("GetCourses");
 
 var summaries = new[]
 {
