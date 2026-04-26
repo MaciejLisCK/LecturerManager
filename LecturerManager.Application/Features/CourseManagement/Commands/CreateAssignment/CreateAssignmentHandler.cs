@@ -10,9 +10,6 @@ public class CreateAssignmentHandler(ICourseRepository courseRepository, IUnitOf
 {
     public async Task<Guid> Handle(CreateAssignmentCommand request, CancellationToken cancellationToken)
     {
-        if (request.CourseId == Guid.Empty)
-            throw new ArgumentException("CourseId cannot be empty.", nameof(request.CourseId));
-
         var course = await courseRepository.GetByIdAsync(request.CourseId, cancellationToken);
         
         if (course == null)

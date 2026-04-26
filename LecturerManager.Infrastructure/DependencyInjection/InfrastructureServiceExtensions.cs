@@ -5,6 +5,7 @@ using LecturerManager.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using LecturerManager.Infrastructure.Persistence.Interceptors;
 
 namespace LecturerManager.Infrastructure.DependencyInjection;
 
@@ -14,8 +15,13 @@ public static class InfrastructureServiceExtensions
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection")
             ?? throw new InvalidOperationException("Connection string 'DefaultConnection' was not found.");
-
-        services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+            
+        services.AddScoped<DomainEventPublishingInterceptor>();
+        services.AddDbContext<ApplicationDbContext>((sp, options) =>
+        {
+            options.UseSqlServer(connectionString);
+            options.AddInterceptors(sp.GetRequiredService<DomainEventPublishingInterceptor>());
+        });
         services.AddScoped<ICourseRepository, CourseRepository>();
         services.AddScoped<IUnitOfWork, EfUnitOfWork>();
 

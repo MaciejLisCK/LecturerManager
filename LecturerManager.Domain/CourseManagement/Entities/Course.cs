@@ -1,15 +1,19 @@
 using LecturerManager.Domain.CourseManagement.Exceptions;
 using LecturerManager.Domain.CourseManagement.ValueObjects;
+using LecturerManager.Domain.Shared.Interfaces;
 
 namespace LecturerManager.Domain.CourseManagement.Entities;
 
-public class Course
+public class Course : IAggregateRoot
 {
     public Guid Id { get; init; }
     public CourseName Name { get; private set; } = null!;
 
     private readonly List<Assignment> _assignments = [];
     public IReadOnlyList<Assignment> Assignments => _assignments.AsReadOnly();
+
+    private readonly List<IDomainEvent> _domainEvents = [];
+    public IReadOnlyList<IDomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
     private Course() { }
 
@@ -23,6 +27,7 @@ public class Course
     {
         var assignment = new Assignment(this.Id, name);
         _assignments.Add(assignment);
+        _domainEvents.Add(new AssignmentCreatedDomainEvent(Id, assignment.Id));
         return assignment.Id;
     }
 
@@ -38,4 +43,6 @@ public class Course
 
         return assignmentTextItemId;
     }
+
+    public void ClearDomainEvents() => _domainEvents.Clear();
 }
