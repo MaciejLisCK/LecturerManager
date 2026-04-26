@@ -1,14 +1,12 @@
 using LecturerManager.Domain.CourseManagement.ValueObjects;
+using LecturerManager.Domain.Shared;
 
 namespace LecturerManager.Domain.CourseManagement.Entities;
 
-public class Assignment
+public class Assignment : Entity<Guid>
 {
-    public Guid Id { get; init; }
     public Guid CourseId { get; init; }
     public AssignmentName Name { get; private set; }
-
-    public Course Course { get; private set; } = null!;
 
     private readonly List<AssignmentItem> _assignmentItems = [];
     public IReadOnlyList<AssignmentItem> AssignmentItems => _assignmentItems.AsReadOnly();

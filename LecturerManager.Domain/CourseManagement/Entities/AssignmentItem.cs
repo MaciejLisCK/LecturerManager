@@ -1,10 +1,10 @@
 using LecturerManager.Domain.CourseManagement.ValueObjects;
+using LecturerManager.Domain.Shared;
 
 namespace LecturerManager.Domain.CourseManagement.Entities;
 
-public class AssignmentItem
+public class AssignmentItem : Entity<Guid>
 {
-    public Guid Id { get; init; }
     public AssignmentItemName Name { get; private set; }
 
     protected AssignmentItem() { }

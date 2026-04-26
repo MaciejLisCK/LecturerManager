@@ -1,12 +1,13 @@
+using LecturerManager.Domain.CourseManagement.Events;
 using LecturerManager.Domain.CourseManagement.Exceptions;
 using LecturerManager.Domain.CourseManagement.ValueObjects;
+using LecturerManager.Domain.Shared;
 using LecturerManager.Domain.Shared.Interfaces;
 
 namespace LecturerManager.Domain.CourseManagement.Entities;
 
-public class Course : IAggregateRoot
+public class Course : Entity<Guid>, IAggregateRoot
 {
-    public Guid Id { get; init; }
     public CourseName Name { get; private set; } = null!;
 
     private readonly List<Assignment> _assignments = [];
@@ -31,10 +32,8 @@ public class Course : IAggregateRoot
         return assignment.Id;
     }
 
-    public Guid AddAssigmentTextItem(Guid assignmentId, AssignmentItemName name, AssignmentTextItemText text)
+    public Guid AddAssignmentTextItem(Guid assignmentId, AssignmentItemName name, AssignmentTextItemText text)
     {
-        var assignmentTextItem = new AssignmentTextItem(name, text);
-
         var assignment = _assignments.SingleOrDefault(a => a.Id == assignmentId);
         if (assignment is null)
             throw new AssignmentNotFoundException(assignmentId);
