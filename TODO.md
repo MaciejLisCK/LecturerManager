@@ -5,7 +5,7 @@ Przed każdym zadaniem AI powinien przeczytać `AGENTS.md` i odpowiednie pliki k
 
 ## Lista zadań do zrobienia
 
-- [ ] Mechanizm generowania serwisów i typów na podstawie definicji API.
+- [x] Mechanizm generowania serwisów i typów na podstawie definicji API.
 - [ ] Strona z możliwością dodania nowych zajęć(Course).
 - [ ] Strona z wylistowanymi wszystkimi zajęciami(Course).
 - [ ] Strona z możliwością dodania nowych zadań.
