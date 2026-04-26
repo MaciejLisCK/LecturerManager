@@ -1,8 +1,12 @@
 using LecturerManager.Application;
+using LecturerManager.Application.DTOs.Common;
+using LecturerManager.Application.DTOs.CourseManagement.Responses;
+using LecturerManager.Application.Features.CourseManagement.GetCourses;
 using LecturerManager.Domain.CourseManagement.Interfaces;
 using LecturerManager.Domain.Shared.Interfaces;
 using LecturerManager.Infrastructure.Persistence;
 using LecturerManager.Infrastructure.Repositories;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,6 +41,18 @@ if (app.Environment.IsDevelopment())
 app.UseCors("AllowAngular");
 app.UseHttpsRedirection();
 
+app.MapGet("/courses", async (ISender sender, CancellationToken cancellationToken) =>
+{
+    var courses = await sender.Send(new GetCoursesQuery(), cancellationToken);
+    return Results.Ok(ApiResponse<IReadOnlyList<CourseResponseDto>>.SuccessResponse(
+        courses, 
+        "Courses retrieved successfully"
+    ));
+})
+.WithName("GetCourses")
+.WithOpenApi()
+.WithDescription("Get all courses with their assignments and items");
+
 var summaries = new[]
 {
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -55,6 +71,8 @@ app.MapGet("/weatherforecast", () =>
     return forecast;
 })
 .WithName("GetWeatherForecast");
+
+
 
 app.Run();
 

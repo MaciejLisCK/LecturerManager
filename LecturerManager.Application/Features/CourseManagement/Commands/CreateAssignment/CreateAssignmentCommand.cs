@@ -1,5 +1,5 @@
 using MediatR;
 
-namespace LecturerManager.Application.CourseManagement.Features.CreateAssignment;
+namespace LecturerManager.Application.Features.CourseManagement.Commands.CreateAssignment;
 
 public record CreateAssignmentCommand(Guid CourseId, string Name) : IRequest<Guid>;

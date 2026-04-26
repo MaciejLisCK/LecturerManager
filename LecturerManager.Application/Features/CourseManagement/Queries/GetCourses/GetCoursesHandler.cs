@@ -2,7 +2,7 @@ using LecturerManager.Domain.CourseManagement.Entities;
 using LecturerManager.Domain.CourseManagement.Interfaces;
 using MediatR;
 
-namespace LecturerManager.Application.CourseManagement.Features.GetCourses;
+namespace LecturerManager.Application.Features.CourseManagement.Queries.GetCourses;
 
 public class GetCoursesHandler(ICourseRepository courseRepository) : IRequestHandler<GetCoursesQuery, IReadOnlyList<Course>>
 {
