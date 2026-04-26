@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace LecturerManager.Infrastructure.Persistence.Configurations;
 
-public class AssignmentImageItemConfiguration : IEntityTypeConfiguration<AssignmentTextItem>
+public class AssignmentTextItemConfiguration : IEntityTypeConfiguration<AssignmentTextItem>
 {
     public void Configure(EntityTypeBuilder<AssignmentTextItem> builder)
     {
