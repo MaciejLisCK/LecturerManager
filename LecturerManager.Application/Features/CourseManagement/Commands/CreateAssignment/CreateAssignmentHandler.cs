@@ -1,3 +1,4 @@
+using LecturerManager.Domain.CourseManagement.Exceptions;
 using LecturerManager.Domain.CourseManagement.Interfaces;
 using LecturerManager.Domain.CourseManagement.ValueObjects;
 using LecturerManager.Domain.Shared.Interfaces;
@@ -15,7 +16,7 @@ public class CreateAssignmentHandler(ICourseRepository courseRepository, IUnitOf
         var course = await courseRepository.GetByIdAsync(request.CourseId, cancellationToken);
         
         if (course == null)
-            throw new InvalidOperationException($"Course with ID '{request.CourseId}' was not found.");
+            throw new CourseNotFoundException(request.CourseId);
 
         var assignmentName = new AssignmentName(request.Name);
         var assignmentId = course.AddAssignment(assignmentName);

@@ -1,10 +1,13 @@
 using LecturerManager.Application;
 using LecturerManager.Application.Features.CourseManagement.Queries.GetCourses;
+using LecturerManager.Domain.CourseManagement.Exceptions;
 using LecturerManager.Domain.CourseManagement.Interfaces;
+using LecturerManager.Domain.Shared.Exceptions;
 using LecturerManager.Domain.Shared.Interfaces;
 using LecturerManager.Infrastructure.Persistence;
 using LecturerManager.Infrastructure.Repositories;
 using MediatR;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,14 +33,37 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+app.UseExceptionHandler(options =>
+{
+    options.Run(async context =>
+    {
+        var exceptionFeature = context.Features.Get<IExceptionHandlerFeature>();
+        var exception = exceptionFeature?.Error;
+
+        context.Response.StatusCode = exception switch
+        {
+            CourseNotFoundException => StatusCodes.Status404NotFound,
+            AssignmentNotFoundException => StatusCodes.Status404NotFound,
+            DomainException => StatusCodes.Status400BadRequest,
+            _ => StatusCodes.Status500InternalServerError
+        };
+
+        context.Response.ContentType = "application/problem+json";
+        await context.Response.WriteAsJsonAsync(new
+        {
+            status = context.Response.StatusCode,
+            error = exception?.Message
+        });
+    });
+});
+
+app.UseHttpsRedirection();
+app.UseCors("AllowAngular");
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
-
-app.UseCors("AllowAngular");
-app.UseHttpsRedirection();
 
 app.MapGet("/courses", async (ISender sender, CancellationToken cancellationToken) =>
 {

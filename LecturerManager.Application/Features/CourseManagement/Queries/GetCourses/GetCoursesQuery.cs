@@ -1,6 +1,6 @@
-using LecturerManager.Domain.CourseManagement.Entities;
+using LecturerManager.Application.Features.CourseManagement.DTOs;
 using MediatR;
 
 namespace LecturerManager.Application.Features.CourseManagement.Queries.GetCourses;
 
-public record GetCoursesQuery() : IRequest<IReadOnlyList<Course>>;
+public record GetCoursesQuery() : IRequest<IReadOnlyList<CourseDto>>;
