@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { JsonPipe } from '@angular/common';
-import { CoursesService } from './services/courses.service';
+import { Client, CourseDto } from './api/api';
 
 @Component({
   selector: 'app-root',
@@ -12,12 +12,12 @@ import { CoursesService } from './services/courses.service';
 export class App implements OnInit {
   protected readonly title = signal('lecturer-manager-frontend');
 
-  courses = signal<any>(null);
+  courses = signal<CourseDto[] | null>(null);
 
-  constructor(private coursesService: CoursesService) {}
+  constructor(private client: Client) {}
 
   ngOnInit() {
-    this.coursesService.getCourses().subscribe(
+    this.client.getCourses().subscribe(
       (data) => this.courses.set(data),
       (error) => console.error('API error:', error)
     );

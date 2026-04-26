@@ -1,3 +1,4 @@
+using LecturerManager.Application.Features.CourseManagement.DTOs;
 using LecturerManager.Application.Features.CourseManagement.Queries.GetCourses;
 using MediatR;
 
@@ -9,7 +10,10 @@ public static class CourseEndpoints
     {
         app.MapGet("/courses", async (ISender sender, CancellationToken cancellationToken) =>
             await sender.Send(new GetCoursesQuery(), cancellationToken)
-        ).WithName("GetCourses");
+        )
+        .WithName("GetCourses")
+        .WithTags("Courses")
+        .Produces<IEnumerable<CourseDto>>();
 
         return app;
     }

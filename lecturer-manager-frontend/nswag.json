@@ -1,0 +1,19 @@
+{
+  "runtime": "Net90",
+  "documentGenerator": {
+    "fromDocument": {
+      "url": "http://localhost:5268/openapi/v1.json"
+    }
+  },
+  "codeGenerators": {
+    "openApiToTypeScriptClient": {
+      "template": "Angular",
+      "generateClientInterfaces": true,
+      "baseUrlTokenName": "API_BASE_URL",
+      "injectionTokenType": "InjectionToken",
+      "dateTimeType": "string",
+      "rxJsVersion": 7.0,
+      "outputFilePath": "src/app/api/api.ts"
+    }
+  }
+}
