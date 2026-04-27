@@ -2,14 +2,12 @@
   <thead>
     <tr>
       <th>Nazwa</th>
-      <th>Liczba zadań</th>
     </tr>
   </thead>
   <tbody>
     @for (course of coursesResource.value() ?? []; track course.id) {
       <tr>
         <td>{{ course.name }}</td>
-        <td>{{ course.assignments.length }}</td>
       </tr>
     }
   </tbody>
