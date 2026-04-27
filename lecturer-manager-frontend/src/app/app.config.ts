@@ -3,7 +3,7 @@ import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 
 import { routes } from './app.routes';
-import { API_BASE_URL } from './api/api';
+import { API_BASE_URL, Client } from './api/api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -11,5 +11,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(),
     { provide: API_BASE_URL, useValue: '/api' },
+    Client,
   ],
 };
