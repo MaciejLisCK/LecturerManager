@@ -1,25 +1,11 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { JsonPipe } from '@angular/common';
-import { Client, CourseDto } from './api/api';
+import { Navbar } from './layout/navbar/navbar';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, JsonPipe],
+  imports: [RouterOutlet, Navbar],
   templateUrl: './app.html',
-  styleUrl: './app.scss'
+  styleUrl: './app.scss',
 })
-export class App implements OnInit {
-  protected readonly title = signal('lecturer-manager-frontend');
-
-  courses = signal<CourseDto[] | null>(null);
-
-  constructor(private client: Client) {}
-
-  ngOnInit() {
-    this.client.getCourses().subscribe(
-      (data) => this.courses.set(data),
-      (error) => console.error('API error:', error)
-    );
-  }
-}
+export class App {}
