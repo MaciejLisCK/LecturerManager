@@ -1,5 +1,5 @@
 {
-  "runtime": "Net90",
+  "runtime": "Net100",
   "documentGenerator": {
     "fromDocument": {
       "url": "http://localhost:5268/openapi/v1.json"
@@ -13,7 +13,7 @@
       "injectionTokenType": "InjectionToken",
       "dateTimeType": "string",
       "rxJsVersion": 7.0,
-      "outputFilePath": "src/app/api/api.ts"
+      "output": "src/app/api/api.ts"
     }
   }
 }
