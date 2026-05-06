@@ -1,4 +1,5 @@
 using LecturerManager.Application.Features.CourseManagement.Commands.CreateCourse;
+using LecturerManager.Application.Features.CourseManagement.Commands.DeleteCourse;
 using LecturerManager.Application.Features.CourseManagement.DTOs;
 using LecturerManager.Application.Features.CourseManagement.Queries.GetCourses;
 using MediatR;
@@ -24,6 +25,15 @@ public static class CourseEndpoints
         .WithName("CreateCourse")
         .WithTags("Courses")
         .Produces(StatusCodes.Status201Created);
+
+        app.MapDelete("/courses/{id:guid}", async (Guid id, ISender sender, CancellationToken cancellationToken) =>
+        {
+            await sender.Send(new DeleteCourseCommand(id), cancellationToken);
+            return Results.NoContent();
+        })
+        .WithName("DeleteCourse")
+        .WithTags("Courses")
+        .Produces(StatusCodes.Status204NoContent);
 
         return app;
     }

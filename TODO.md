@@ -10,5 +10,6 @@ Przed każdym zadaniem AI powinien przeczytać `AGENTS.md` i odpowiednie pliki k
 - [x] Menu nawigacyjne.
 - [x] Usuń liczbę zadań w tabeli kursów.
 - [x] Strona z możliwością dodania nowych zajęć(Course).
+- [x] Możliwość usuwania zajęć
 - [ ] Strona z wylistowanymi wszystkimi zajęciami(Course).
 - [ ] Strona z możliwością dodania nowych zadań.

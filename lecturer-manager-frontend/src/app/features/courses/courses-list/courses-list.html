@@ -2,12 +2,22 @@
   <thead>
     <tr>
       <th>Nazwa</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
     @for (course of coursesResource.value() ?? []; track course.id) {
       <tr>
         <td>{{ course.name }}</td>
+        <td class="text-end">
+          <button
+            class="btn btn-sm btn-outline-danger"
+            (click)="deleteCourse(course.id)"
+            [attr.aria-label]="'Usu\u0144 kurs ' + course.name"
+          >
+            Usuń
+          </button>
+        </td>
       </tr>
     }
   </tbody>

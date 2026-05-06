@@ -24,4 +24,9 @@ public class CourseRepository(ApplicationDbContext dbContext) : ICourseRepositor
 
     public async Task AddAsync(Course course, CancellationToken cancellationToken = default) =>
         await dbContext.Courses.AddAsync(course, cancellationToken);
+
+    public async Task DeleteAsync(Guid courseId, CancellationToken cancellationToken = default)
+    {
+        await dbContext.Courses.Where(c => c.Id == courseId).ExecuteDeleteAsync(cancellationToken);
+    }
 }

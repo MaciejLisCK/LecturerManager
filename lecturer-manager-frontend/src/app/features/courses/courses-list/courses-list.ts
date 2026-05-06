@@ -1,4 +1,4 @@
-import { Component, inject, resource } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, resource } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Client, CourseDto } from '../../../api/api';
 
@@ -7,6 +7,7 @@ import { Client, CourseDto } from '../../../api/api';
   imports: [],
   templateUrl: './courses-list.html',
   styleUrl: './courses-list.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CoursesList {
   private readonly client = inject(Client);
@@ -14,4 +15,9 @@ export class CoursesList {
   protected coursesResource = resource<CourseDto[], void>({
     loader: () => firstValueFrom(this.client.getCourses()),
   });
+
+  protected async deleteCourse(id: string) {
+    await firstValueFrom(this.client.deleteCourse(id));
+    this.coursesResource.reload();
+  }
 }
