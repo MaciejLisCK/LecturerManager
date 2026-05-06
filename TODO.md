@@ -9,6 +9,6 @@ Przed każdym zadaniem AI powinien przeczytać `AGENTS.md` i odpowiednie pliki k
 - [x] Dodaj bootstrap do aplikacji angularowej.
 - [x] Menu nawigacyjne.
 - [x] Usuń liczbę zadań w tabeli kursów.
-- [ ] Strona z możliwością dodania nowych zajęć(Course).
+- [x] Strona z możliwością dodania nowych zajęć(Course).
 - [ ] Strona z wylistowanymi wszystkimi zajęciami(Course).
 - [ ] Strona z możliwością dodania nowych zadań.

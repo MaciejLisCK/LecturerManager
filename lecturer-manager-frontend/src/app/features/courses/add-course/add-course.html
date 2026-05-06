@@ -1,0 +1,44 @@
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <h2 class="mb-4">Dodaj kurs</h2>
+
+    @if (errorMessage()) {
+      <div class="alert alert-danger" role="alert">{{ errorMessage() }}</div>
+    }
+
+    <form (ngSubmit)="onSubmit()" #courseForm="ngForm">
+      <div class="mb-3">
+        <label for="courseName" class="form-label">Nazwa kursu</label>
+        <input
+          id="courseName"
+          type="text"
+          class="form-control"
+          [ngModel]="name()"
+          (ngModelChange)="name.set($event)"
+          name="name"
+          required
+          maxlength="300"
+          placeholder="Wpisz nazwę kursu"
+          aria-required="true"
+        />
+      </div>
+
+      <div class="d-flex gap-2">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="isSaving() || !name().trim()"
+          aria-label="Zapisz kurs"
+        >
+          @if (isSaving()) {
+            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            Zapisywanie…
+          } @else {
+            Zapisz
+          }
+        </button>
+        <a routerLink="/courses" class="btn btn-outline-secondary" aria-label="Anuluj i wróć do listy kursów">Anuluj</a>
+      </div>
+    </form>
+  </div>
+</div>

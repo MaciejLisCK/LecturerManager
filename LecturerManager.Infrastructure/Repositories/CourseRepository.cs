@@ -21,5 +21,7 @@ public class CourseRepository(ApplicationDbContext dbContext) : ICourseRepositor
             .Include(c => c.Assignments)
             .ThenInclude(a => a.AssignmentItems)
             .SingleOrDefaultAsync(c => c.Id == courseId, cancellationToken);
+
+    public async Task AddAsync(Course course, CancellationToken cancellationToken = default) =>
+        await dbContext.Courses.AddAsync(course, cancellationToken);
 }
-    
