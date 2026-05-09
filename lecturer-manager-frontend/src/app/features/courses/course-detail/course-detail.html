@@ -30,12 +30,22 @@
       <thead>
         <tr>
           <th>Nazwa zadania</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         @for (assignment of course.assignments; track assignment.id) {
           <tr>
             <td>{{ assignment.name }}</td>
+            <td class="text-end">
+              <button
+                class="btn btn-outline-danger btn-sm"
+                (click)="deleteAssignment(assignment.id)"
+                [attr.aria-label]="'Usuń zadanie ' + assignment.name"
+              >
+                Usuń
+              </button>
+            </td>
           </tr>
         }
       </tbody>

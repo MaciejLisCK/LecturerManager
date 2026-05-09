@@ -1,4 +1,5 @@
 using LecturerManager.Application.Features.CourseManagement.Commands.CreateAssignment;
+using LecturerManager.Application.Features.CourseManagement.Commands.DeleteAssignment;
 using MediatR;
 
 namespace LecturerManager.Api.Endpoints;
@@ -15,6 +16,15 @@ public static class AssignmentEndpoints
         .WithName("CreateAssignment")
         .WithTags("Assignments")
         .Produces(StatusCodes.Status201Created);
+
+        app.MapDelete("/courses/{courseId:guid}/assignments/{assignmentId:guid}", async (Guid courseId, Guid assignmentId, ISender sender, CancellationToken cancellationToken) =>
+        {
+            await sender.Send(new DeleteAssignmentCommand(courseId, assignmentId), cancellationToken);
+            return Results.NoContent();
+        })
+        .WithName("DeleteAssignment")
+        .WithTags("Assignments")
+        .Produces(StatusCodes.Status204NoContent);
 
         return app;
     }

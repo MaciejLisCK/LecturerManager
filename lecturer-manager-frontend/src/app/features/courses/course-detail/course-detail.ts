@@ -19,4 +19,9 @@ export class CourseDetail {
     params: () => this.courseId(),
     loader: ({ params: id }) => firstValueFrom(this.client.getCourseById(id)),
   });
+
+  protected async deleteAssignment(assignmentId: string) {
+    await firstValueFrom(this.client.deleteAssignment(this.courseId(), assignmentId));
+    this.courseResource.reload();
+  }
 }

@@ -13,3 +13,4 @@ Przed każdym zadaniem AI powinien przeczytać `AGENTS.md` i odpowiednie pliki k
 - [x] Możliwość usuwania zajęć
 - [x] Strona z możliwością dodania nowych zadań.
 - [x] Na stronie z kursami po kliknięcu kursu przechodzi sie do strony kursu z listą zadań.
+- [ ] Na stronie kursu na liście zadań obok zadania jest przycisk który usuwa zadanie.

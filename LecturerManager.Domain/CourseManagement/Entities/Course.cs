@@ -43,5 +43,14 @@ public class Course : Entity<Guid>, IAggregateRoot
         return assignmentTextItemId;
     }
 
+    public void RemoveAssignment(Guid assignmentId)
+    {
+        var assignment = _assignments.SingleOrDefault(a => a.Id == assignmentId);
+        if (assignment is null)
+            throw new AssignmentNotFoundException(assignmentId);
+
+        _assignments.Remove(assignment);
+    }
+
     public void ClearDomainEvents() => _domainEvents.Clear();
 }
