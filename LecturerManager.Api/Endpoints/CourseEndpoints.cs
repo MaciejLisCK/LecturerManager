@@ -1,6 +1,7 @@
 using LecturerManager.Application.Features.CourseManagement.Commands.CreateCourse;
 using LecturerManager.Application.Features.CourseManagement.Commands.DeleteCourse;
 using LecturerManager.Application.Features.CourseManagement.DTOs;
+using LecturerManager.Application.Features.CourseManagement.Queries.GetCourseById;
 using LecturerManager.Application.Features.CourseManagement.Queries.GetCourses;
 using MediatR;
 
@@ -16,6 +17,16 @@ public static class CourseEndpoints
         .WithName("GetCourses")
         .WithTags("Courses")
         .Produces<IEnumerable<CourseDto>>();
+
+        app.MapGet("/courses/{id:guid}", async (Guid id, ISender sender, CancellationToken cancellationToken) =>
+        {
+            var course = await sender.Send(new GetCourseByIdQuery(id), cancellationToken);
+            return course is null ? Results.NotFound() : Results.Ok(course);
+        })
+        .WithName("GetCourseById")
+        .WithTags("Courses")
+        .Produces<CourseDto>()
+        .Produces(StatusCodes.Status404NotFound);
 
         app.MapPost("/courses", async (CreateCourseCommand command, ISender sender, CancellationToken cancellationToken) =>
         {

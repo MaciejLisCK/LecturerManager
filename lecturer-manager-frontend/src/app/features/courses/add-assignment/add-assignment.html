@@ -37,7 +37,7 @@
             Zapisz
           }
         </button>
-        <a routerLink="/courses" class="btn btn-outline-secondary" aria-label="Anuluj i wróć do listy kursów">Anuluj</a>
+        <a [routerLink]="['/courses', courseId()]" class="btn btn-outline-secondary" aria-label="Anuluj i wróć do kursu">Anuluj</a>
       </div>
     </form>
   </div>

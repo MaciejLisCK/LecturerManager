@@ -1,0 +1,44 @@
+@if (courseResource.isLoading()) {
+  <div class="d-flex justify-content-center mt-4">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Ładowanie...</span>
+    </div>
+  </div>
+} @else if (courseResource.error()) {
+  <div class="alert alert-danger" role="alert">Nie udało się załadować kursu.</div>
+} @else if (courseResource.value(); as course) {
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <h2 class="mb-0">{{ course.name }}</h2>
+    <div class="d-flex gap-2">
+      <a
+        class="btn btn-outline-primary"
+        [routerLink]="['/courses', courseId(), 'assignments', 'add']"
+        aria-label="Dodaj zadanie do kursu"
+      >
+        Dodaj zadanie
+      </a>
+      <a routerLink="/courses" class="btn btn-outline-secondary" aria-label="Wróć do listy kursów">
+        Wróć
+      </a>
+    </div>
+  </div>
+
+  @if (course.assignments.length === 0) {
+    <p class="text-muted">Brak zadań w tym kursie.</p>
+  } @else {
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Nazwa zadania</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (assignment of course.assignments; track assignment.id) {
+          <tr>
+            <td>{{ assignment.name }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+}

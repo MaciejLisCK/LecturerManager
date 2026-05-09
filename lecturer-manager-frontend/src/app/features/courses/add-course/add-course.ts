@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { Client } from '../../../api/api';
+import { Client, CreateCourseCommand } from '../../../api/api';
 
 @Component({
   selector: 'app-add-course',
@@ -25,7 +25,7 @@ export class AddCourse {
     this.isSaving.set(true);
     this.errorMessage.set(null);
     try {
-      await firstValueFrom(this.client.createCourse({ name: this.name() }));
+      await firstValueFrom(this.client.createCourse(new CreateCourseCommand({ name: this.name() })));
       await this.router.navigate(['/courses']);
     } catch {
       this.errorMessage.set('Nie udało się dodać kursu. Spróbuj ponownie.');

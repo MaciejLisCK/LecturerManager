@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { Client } from '../../../api/api';
+import { Client, CreateAssignmentRequest } from '../../../api/api';
 
 @Component({
   selector: 'app-add-assignment',
@@ -27,8 +27,8 @@ export class AddAssignment {
     this.isSaving.set(true);
     this.errorMessage.set(null);
     try {
-      await firstValueFrom(this.client.createAssignment(this.courseId(), { name: this.name() }));
-      await this.router.navigate(['/courses']);
+      await firstValueFrom(this.client.createAssignment(this.courseId(), new CreateAssignmentRequest({ name: this.name() })));
+      await this.router.navigate(['/courses', this.courseId()]);
     } catch {
       this.errorMessage.set('Nie udało się dodać zadania. Spróbuj ponownie.');
     } finally {
