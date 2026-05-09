@@ -8,6 +8,9 @@ public class AssignmentItemConfiguration : IEntityTypeConfiguration<AssignmentIt
 {
     public void Configure(EntityTypeBuilder<AssignmentItem> builder)
     {
+        builder.Property(x => x.Id)
+            .ValueGeneratedNever();
+
         builder
             .HasDiscriminator<string>("item_type")
             .HasValue<AssignmentTextItem>("text")

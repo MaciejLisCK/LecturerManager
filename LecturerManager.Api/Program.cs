@@ -61,5 +61,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapCourseEndpoints();
+app.MapAssignmentEndpoints();
 
 app.Run();

@@ -10,6 +10,13 @@
       <tr>
         <td>{{ course.name }}</td>
         <td class="text-end">
+          <a
+            class="btn btn-sm btn-outline-primary me-2"
+            [routerLink]="['/courses', course.id, 'assignments', 'add']"
+            [attr.aria-label]="'Dodaj zadanie do kursu ' + course.name"
+          >
+            Dodaj zadanie
+          </a>
           <button
             class="btn btn-sm btn-outline-danger"
             (click)="deleteCourse(course.id)"

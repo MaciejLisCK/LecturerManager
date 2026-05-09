@@ -11,12 +11,10 @@ public class CreateAssignmentHandler(ICourseRepository courseRepository, IUnitOf
     public async Task<Guid> Handle(CreateAssignmentCommand request, CancellationToken cancellationToken)
     {
         var course = await courseRepository.GetByIdAsync(request.CourseId, cancellationToken);
-        
-        if (course == null)
+        if (course is null)
             throw new CourseNotFoundException(request.CourseId);
 
-        var assignmentName = new AssignmentName(request.Name);
-        var assignmentId = course.AddAssignment(assignmentName);
+        var assignmentId = course.AddAssignment(new AssignmentName(request.Name));
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 

@@ -19,4 +19,7 @@ public class ApplicationDbContext : DbContext
 		modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 		modelBuilder.ApplyCustomNamingConventions();
 	}
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        => base.SaveChangesAsync(cancellationToken);
 }
