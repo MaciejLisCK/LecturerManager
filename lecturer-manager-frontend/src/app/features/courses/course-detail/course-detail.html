@@ -35,12 +35,17 @@
       </thead>
       <tbody>
         @for (assignment of course.assignments; track assignment.id) {
-          <tr>
+          <tr
+            class="cursor-pointer"
+            style="cursor: pointer"
+            (click)="navigateToAssignment(assignment.id)"
+            [attr.aria-label]="'Przejdź do zadania ' + assignment.name"
+          >
             <td>{{ assignment.name }}</td>
             <td class="text-end">
               <button
                 class="btn btn-outline-danger btn-sm"
-                (click)="deleteAssignment(assignment.id)"
+                (click)="$event.stopPropagation(); deleteAssignment(assignment.id)"
                 [attr.aria-label]="'Usuń zadanie ' + assignment.name"
               >
                 Usuń

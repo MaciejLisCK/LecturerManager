@@ -15,4 +15,15 @@ internal static class CourseMappingExtensions
         assignment.Id,
         assignment.Name.Value
     );
+
+    internal static AssignmentDetailDto ToDetailDto(this Assignment assignment) => new(
+        assignment.Id,
+        assignment.Name.Value,
+        [.. assignment.AssignmentItems.Select(i => i.ToDto())]
+    );
+
+    internal static AssignmentItemDto ToDto(this AssignmentItem item) => new(
+        item.Id,
+        item.Name.Value
+    );
 }

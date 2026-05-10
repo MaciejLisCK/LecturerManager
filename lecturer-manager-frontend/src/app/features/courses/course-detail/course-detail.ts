@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, input, resource } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { Client, CourseDto } from '../../../api/api';
 
@@ -12,6 +12,7 @@ import { Client, CourseDto } from '../../../api/api';
 })
 export class CourseDetail {
   private readonly client = inject(Client);
+  private readonly router = inject(Router);
 
   readonly courseId = input.required<string>();
 
@@ -19,6 +20,10 @@ export class CourseDetail {
     params: () => this.courseId(),
     loader: ({ params: id }) => firstValueFrom(this.client.getCourseById(id)),
   });
+
+  protected navigateToAssignment(assignmentId: string) {
+    this.router.navigate(['/courses', this.courseId(), 'assignments', assignmentId]);
+  }
 
   protected async deleteAssignment(assignmentId: string) {
     await firstValueFrom(this.client.deleteAssignment(this.courseId(), assignmentId));

@@ -32,13 +32,17 @@ export interface IClient {
      */
     deleteCourse(id: string): Observable<void>;
     /**
-     * @return Created
+     * @return OK
      */
-    createAssignment(courseId: string, body: CreateAssignmentRequest): Observable<void>;
+    getAssignmentById(courseId: string, assignmentId: string): Observable<AssignmentDetailDto>;
     /**
      * @return No Content
      */
     deleteAssignment(courseId: string, assignmentId: string): Observable<void>;
+    /**
+     * @return Created
+     */
+    createAssignment(courseId: string, body: CreateAssignmentRequest): Observable<void>;
 }
 
 @Injectable()
@@ -270,50 +274,57 @@ export class Client implements IClient {
     }
 
     /**
-     * @return Created
+     * @return OK
      */
-    createAssignment(courseId: string, body: CreateAssignmentRequest): Observable<void> {
-        let url_ = this.baseUrl + "/courses/{courseId}/assignments";
+    getAssignmentById(courseId: string, assignmentId: string): Observable<AssignmentDetailDto> {
+        let url_ = this.baseUrl + "/courses/{courseId}/assignments/{assignmentId}";
         if (courseId === undefined || courseId === null)
             throw new globalThis.Error("The parameter 'courseId' must be defined.");
         url_ = url_.replace("{courseId}", encodeURIComponent("" + courseId));
+        if (assignmentId === undefined || assignmentId === null)
+            throw new globalThis.Error("The parameter 'assignmentId' must be defined.");
+        url_ = url_.replace("{assignmentId}", encodeURIComponent("" + assignmentId));
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
-
         let options_ : any = {
-            body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json",
+                "Accept": "application/json"
             })
         };
 
-        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
-            return this.processCreateAssignment(response_);
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetAssignmentById(response_);
         })).pipe(_observableCatch((response_: any) => {
             if (response_ instanceof HttpResponseBase) {
                 try {
-                    return this.processCreateAssignment(response_ as any);
+                    return this.processGetAssignmentById(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<void>;
+                    return _observableThrow(e) as any as Observable<AssignmentDetailDto>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<void>;
+                return _observableThrow(response_) as any as Observable<AssignmentDetailDto>;
         }));
     }
 
-    protected processCreateAssignment(response: HttpResponseBase): Observable<void> {
+    protected processGetAssignmentById(response: HttpResponseBase): Observable<AssignmentDetailDto> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
             (response as any).error instanceof Blob ? (response as any).error : undefined;
 
         let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
-        if (status === 201) {
+        if (status === 200) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
-            return _observableOf(null as any);
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AssignmentDetailDto.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("Not Found", status, _responseText, _headers);
             }));
         } else if (status !== 200 && status !== 204) {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
@@ -375,6 +386,127 @@ export class Client implements IClient {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @return Created
+     */
+    createAssignment(courseId: string, body: CreateAssignmentRequest): Observable<void> {
+        let url_ = this.baseUrl + "/courses/{courseId}/assignments";
+        if (courseId === undefined || courseId === null)
+            throw new globalThis.Error("The parameter 'courseId' must be defined.");
+        url_ = url_.replace("{courseId}", encodeURIComponent("" + courseId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateAssignment(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateAssignment(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCreateAssignment(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 201) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+}
+
+export class AssignmentDetailDto implements IAssignmentDetailDto {
+    id!: string;
+    name!: string;
+    items!: AssignmentItemDto[];
+
+    [key: string]: any;
+
+    constructor(data?: IAssignmentDetailDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+        if (!data) {
+            this.items = [];
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.id = _data["id"];
+            this.name = _data["name"];
+            if (Array.isArray(_data["items"])) {
+                this.items = [] as any;
+                for (let item of _data["items"])
+                    this.items!.push(AssignmentItemDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): AssignmentDetailDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AssignmentDetailDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["id"] = this.id;
+        data["name"] = this.name;
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item ? item.toJSON() : undefined as any);
+        }
+        return data;
+    }
+}
+
+export interface IAssignmentDetailDto {
+    id: string;
+    name: string;
+    items: AssignmentItemDto[];
+
+    [key: string]: any;
 }
 
 export class AssignmentDto implements IAssignmentDto {
@@ -423,6 +555,58 @@ export class AssignmentDto implements IAssignmentDto {
 }
 
 export interface IAssignmentDto {
+    id: string;
+    name: string;
+
+    [key: string]: any;
+}
+
+export class AssignmentItemDto implements IAssignmentItemDto {
+    id!: string;
+    name!: string;
+
+    [key: string]: any;
+
+    constructor(data?: IAssignmentItemDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.id = _data["id"];
+            this.name = _data["name"];
+        }
+    }
+
+    static fromJS(data: any): AssignmentItemDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new AssignmentItemDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["id"] = this.id;
+        data["name"] = this.name;
+        return data;
+    }
+}
+
+export interface IAssignmentItemDto {
     id: string;
     name: string;
 

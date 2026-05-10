@@ -1,5 +1,7 @@
 using LecturerManager.Application.Features.CourseManagement.Commands.CreateAssignment;
 using LecturerManager.Application.Features.CourseManagement.Commands.DeleteAssignment;
+using LecturerManager.Application.Features.CourseManagement.DTOs;
+using LecturerManager.Application.Features.CourseManagement.Queries.GetAssignmentById;
 using MediatR;
 
 namespace LecturerManager.Api.Endpoints;
@@ -8,6 +10,16 @@ public static class AssignmentEndpoints
 {
     public static IEndpointRouteBuilder MapAssignmentEndpoints(this IEndpointRouteBuilder app)
     {
+        app.MapGet("/courses/{courseId:guid}/assignments/{assignmentId:guid}", async (Guid courseId, Guid assignmentId, ISender sender, CancellationToken cancellationToken) =>
+        {
+            var assignment = await sender.Send(new GetAssignmentByIdQuery(courseId, assignmentId), cancellationToken);
+            return assignment is null ? Results.NotFound() : Results.Ok(assignment);
+        })
+        .WithName("GetAssignmentById")
+        .WithTags("Assignments")
+        .Produces<AssignmentDetailDto>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status404NotFound);
+
         app.MapPost("/courses/{courseId:guid}/assignments", async (Guid courseId, CreateAssignmentRequest body, ISender sender, CancellationToken cancellationToken) =>
         {
             var id = await sender.Send(new CreateAssignmentCommand(courseId, body.Name), cancellationToken);

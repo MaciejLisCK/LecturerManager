@@ -22,6 +22,14 @@ public class CourseRepository(ApplicationDbContext dbContext) : ICourseRepositor
             .ThenInclude(a => a.AssignmentItems)
             .SingleOrDefaultAsync(c => c.Id == courseId, cancellationToken);
 
+    public async Task<Assignment?> GetAssignmentByIdAsync(Guid courseId, Guid assignmentId, CancellationToken cancellationToken = default) =>
+        await dbContext.Courses
+            .AsSplitQuery()
+            .Where(c => c.Id == courseId)
+            .SelectMany(c => c.Assignments)
+            .Include(a => a.AssignmentItems)
+            .SingleOrDefaultAsync(a => a.Id == assignmentId, cancellationToken);
+
     public async Task AddAsync(Course course, CancellationToken cancellationToken = default) =>
         await dbContext.Courses.AddAsync(course, cancellationToken);
 

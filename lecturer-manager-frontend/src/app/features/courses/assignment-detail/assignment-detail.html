@@ -1,0 +1,48 @@
+@if (assignmentResource.isLoading()) {
+  <div class="d-flex justify-content-center mt-4">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Ładowanie...</span>
+    </div>
+  </div>
+} @else if (assignmentResource.error()) {
+  <div class="alert alert-danger" role="alert">Nie udało się załadować zadania.</div>
+} @else if (assignmentResource.value(); as assignment) {
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <h2 class="mb-0">{{ assignment.name }}</h2>
+    <div class="d-flex gap-2">
+      <a
+        class="btn btn-outline-primary"
+        [routerLink]="['/courses', courseId(), 'assignments', assignmentId(), 'items', 'add']"
+        aria-label="Dodaj element zadania"
+      >
+        Dodaj element
+      </a>
+      <a
+        [routerLink]="['/courses', courseId()]"
+        class="btn btn-outline-secondary"
+        aria-label="Wróć do kursu"
+      >
+        Wróć
+      </a>
+    </div>
+  </div>
+
+  @if (assignment.items.length === 0) {
+    <p class="text-muted">Brak elementów w tym zadaniu.</p>
+  } @else {
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Nazwa elementu</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of assignment.items; track item.id) {
+          <tr>
+            <td>{{ item.name }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+}
