@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, inject, resource } from '@angular/c
 import { RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 import { Client, CourseDto } from '../../../api/api';
+import { Breadcrumb } from '../../../layout/breadcrumb/breadcrumb';
 
 @Component({
   selector: 'app-courses-list',
-  imports: [RouterLink],
+  imports: [RouterLink, Breadcrumb],
   templateUrl: './courses-list.html',
   styleUrl: './courses-list.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

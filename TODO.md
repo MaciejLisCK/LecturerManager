@@ -18,3 +18,4 @@ Przed każdym zadaniem AI powinien przeczytać `AGENTS.md` i odpowiednie pliki k
 - [x] Strona z zadaniami: po kliknięcu zadania przechodzi się do strony z elementami zadania.
 - [x] Strona z elemantami zadania: na stronie jest przycisk, prowadzi on do strony gdzie można dodać element zadania (zdjęciowy albo tekstowy).
 - [x] Strona z elemantami zadania: jest przycisk który umożliwia usuwanie elementu zadania.
+- [x] Na stronach: kursów, zadań i elementach z zadań jest breadcrump.

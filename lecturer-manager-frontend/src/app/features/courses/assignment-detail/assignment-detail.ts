@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, inject, input, resource } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { AssignmentDetailDto, Client } from '../../../api/api';
+import { AssignmentDetailDto, Client, CourseDto } from '../../../api/api';
+import { Breadcrumb } from '../../../layout/breadcrumb/breadcrumb';
 
 @Component({
   selector: 'app-assignment-detail',
-  imports: [RouterLink],
+  imports: [RouterLink, Breadcrumb],
   templateUrl: './assignment-detail.html',
   styleUrl: './assignment-detail.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -15,6 +16,11 @@ export class AssignmentDetail {
 
   readonly courseId = input.required<string>();
   readonly assignmentId = input.required<string>();
+
+  protected courseResource = resource<CourseDto, string>({
+    params: () => this.courseId(),
+    loader: ({ params: id }) => firstValueFrom(this.client.getCourseById(id)),
+  });
 
   protected assignmentResource = resource<AssignmentDetailDto, { courseId: string; assignmentId: string }>({
     params: () => ({ courseId: this.courseId(), assignmentId: this.assignmentId() }),

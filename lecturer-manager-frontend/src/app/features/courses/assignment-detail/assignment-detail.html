@@ -7,6 +7,11 @@
 } @else if (assignmentResource.error()) {
   <div class="alert alert-danger" role="alert">Nie udało się załadować zadania.</div>
 } @else if (assignmentResource.value(); as assignment) {
+  <app-breadcrumb [items]="[
+    { label: 'Zajęcia', routerLink: ['/courses'] },
+    { label: courseResource.value()?.name ?? '...', routerLink: ['/courses', courseId()] },
+    { label: assignment.name }
+  ]" />
   <div class="d-flex align-items-center justify-content-between mb-4">
     <h2 class="mb-0">{{ assignment.name }}</h2>
     <div class="d-flex gap-2">
