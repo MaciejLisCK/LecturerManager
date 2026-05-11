@@ -7,10 +7,15 @@ using MediatR;
 using Microsoft.AspNetCore.Diagnostics;
 using FluentValidation;
 using LecturerManager.Api.Endpoints;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();

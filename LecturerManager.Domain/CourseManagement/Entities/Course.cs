@@ -43,6 +43,17 @@ public class Course : Entity<Guid>, IAggregateRoot
         return assignmentTextItemId;
     }
 
+    public Guid AddAssignmentImageItem(Guid assignmentId, AssignmentItemName name, ImageUrl imageUrl)
+    {
+        var assignment = _assignments.SingleOrDefault(a => a.Id == assignmentId);
+        if (assignment is null)
+            throw new AssignmentNotFoundException(assignmentId);
+
+        var assignmentImageItemId = assignment.AddImageItem(name, imageUrl);
+
+        return assignmentImageItemId;
+    }
+
     public void RemoveAssignment(Guid assignmentId)
     {
         var assignment = _assignments.SingleOrDefault(a => a.Id == assignmentId);

@@ -16,4 +16,4 @@ Przed każdym zadaniem AI powinien przeczytać `AGENTS.md` i odpowiednie pliki k
 - [x] Strona kursu: na liście zadań obok zadania jest przycisk który usuwa zadanie.
 - [x] Strona z kursami: po kliknięcu kursu przechodzi sie do strony z zadaniami.
 - [x] Strona z zadaniami: po kliknięcu zadania przechodzi się do strony z elementami zadania.
-- [ ] Strona z elemantami zadania: na stronie jest przycisk, który prowadzi do strony gdzie można dodać element zadania.
+- [x] Strona z elemantami zadania: na stronie jest przycisk, prowadzi on do strony gdzie można dodać element zadania (zdjęciowy albo tekstowy).

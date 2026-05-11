@@ -1,4 +1,6 @@
+using LecturerManager.Api.Requests;
 using LecturerManager.Application.Features.CourseManagement.Commands.CreateAssignment;
+using LecturerManager.Application.Features.CourseManagement.Commands.CreateAssignmentItem;
 using LecturerManager.Application.Features.CourseManagement.Commands.DeleteAssignment;
 using LecturerManager.Application.Features.CourseManagement.DTOs;
 using LecturerManager.Application.Features.CourseManagement.Queries.GetAssignmentById;
@@ -38,8 +40,15 @@ public static class AssignmentEndpoints
         .WithTags("Assignments")
         .Produces(StatusCodes.Status204NoContent);
 
+        app.MapPost("/courses/{courseId:guid}/assignments/{assignmentId:guid}/items", async (Guid courseId, Guid assignmentId, CreateAssignmentItemRequest body, ISender sender, CancellationToken cancellationToken) =>
+        {
+            var id = await sender.Send(new CreateAssignmentItemCommand(courseId, assignmentId, body.Type, body.Name, body.Text, body.ImageUrl), cancellationToken);
+            return Results.Created($"/courses/{courseId}/assignments/{assignmentId}/items/{id}", new { id });
+        })
+        .WithName("CreateAssignmentItem")
+        .WithTags("Assignments")
+        .Produces(StatusCodes.Status201Created);
+
         return app;
     }
 }
-
-public record CreateAssignmentRequest(string Name);

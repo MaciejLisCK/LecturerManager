@@ -1,0 +1,112 @@
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <h2 class="mb-4">Dodaj element zadania</h2>
+
+    @if (errorMessage()) {
+      <div class="alert alert-danger" role="alert">{{ errorMessage() }}</div>
+    }
+
+    <form (ngSubmit)="onSubmit()" #itemForm="ngForm">
+      <fieldset class="mb-3">
+        <legend class="col-form-label">Typ elementu</legend>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            id="typeText"
+            name="itemType"
+            [value]="AssignmentItemType.Text"
+            [ngModel]="itemType()"
+            (ngModelChange)="itemType.set($event)"
+          />
+          <label class="form-check-label" for="typeText">Tekstowy</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            class="form-check-input"
+            type="radio"
+            id="typeImage"
+            name="itemType"
+            [value]="AssignmentItemType.Image"
+            [ngModel]="itemType()"
+            (ngModelChange)="itemType.set($event)"
+          />
+          <label class="form-check-label" for="typeImage">Zdjęciowy</label>
+        </div>
+      </fieldset>
+
+      <div class="mb-3">
+        <label for="itemName" class="form-label">Nazwa elementu</label>
+        <input
+          id="itemName"
+          type="text"
+          class="form-control"
+          [ngModel]="name()"
+          (ngModelChange)="name.set($event)"
+          name="name"
+          required
+          maxlength="300"
+          placeholder="Wpisz nazwę elementu"
+          aria-required="true"
+        />
+      </div>
+
+      @if (itemType() === AssignmentItemType.Text) {
+        <div class="mb-3">
+          <label for="itemText" class="form-label">Treść</label>
+          <textarea
+            id="itemText"
+            class="form-control"
+            [ngModel]="text()"
+            (ngModelChange)="text.set($event)"
+            name="text"
+            required
+            maxlength="5000"
+            rows="5"
+            placeholder="Wpisz treść elementu"
+            aria-required="true"
+          ></textarea>
+        </div>
+      } @else {
+        <div class="mb-3">
+          <label for="itemImageUrl" class="form-label">URL zdjęcia</label>
+          <input
+            id="itemImageUrl"
+            type="url"
+            class="form-control"
+            [ngModel]="imageUrl()"
+            (ngModelChange)="imageUrl.set($event)"
+            name="imageUrl"
+            required
+            maxlength="300"
+            placeholder="https://example.com/image.jpg"
+            aria-required="true"
+          />
+        </div>
+      }
+
+      <div class="d-flex gap-2">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="isSaving() || !name().trim() || (itemType() === AssignmentItemType.Text && !text().trim()) || (itemType() === AssignmentItemType.Image && !imageUrl().trim())"
+          aria-label="Zapisz element zadania"
+        >
+          @if (isSaving()) {
+            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+            Zapisywanie…
+          } @else {
+            Zapisz
+          }
+        </button>
+        <a
+          [routerLink]="['/courses', courseId(), 'assignments', assignmentId()]"
+          class="btn btn-outline-secondary"
+          aria-label="Anuluj i wróć do zadania"
+        >
+          Anuluj
+        </a>
+      </div>
+    </form>
+  </div>
+</div>

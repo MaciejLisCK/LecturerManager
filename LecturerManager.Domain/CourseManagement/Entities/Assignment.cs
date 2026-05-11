@@ -28,4 +28,13 @@ public class Assignment : Entity<Guid>
 
         return assignmentTextItem.Id;
     }
+
+    internal Guid AddImageItem(AssignmentItemName name, ImageUrl imageUrl)
+    {
+        var assignmentImageItem = new AssignmentImageItem(name, imageUrl);
+
+        _assignmentItems.Add(assignmentImageItem);
+
+        return assignmentImageItem.Id;
+    }
 }

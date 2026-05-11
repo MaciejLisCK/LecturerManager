@@ -43,6 +43,10 @@ export interface IClient {
      * @return Created
      */
     createAssignment(courseId: string, body: CreateAssignmentRequest): Observable<void>;
+    /**
+     * @return Created
+     */
+    createAssignmentItem(courseId: string, assignmentId: string, body: CreateAssignmentItemRequest): Observable<void>;
 }
 
 @Injectable()
@@ -440,6 +444,63 @@ export class Client implements IClient {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @return Created
+     */
+    createAssignmentItem(courseId: string, assignmentId: string, body: CreateAssignmentItemRequest): Observable<void> {
+        let url_ = this.baseUrl + "/courses/{courseId}/assignments/{assignmentId}/items";
+        if (courseId === undefined || courseId === null)
+            throw new globalThis.Error("The parameter 'courseId' must be defined.");
+        url_ = url_.replace("{courseId}", encodeURIComponent("" + courseId));
+        if (assignmentId === undefined || assignmentId === null)
+            throw new globalThis.Error("The parameter 'assignmentId' must be defined.");
+        url_ = url_.replace("{assignmentId}", encodeURIComponent("" + assignmentId));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processCreateAssignmentItem(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processCreateAssignmentItem(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processCreateAssignmentItem(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 201) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 export class AssignmentDetailDto implements IAssignmentDetailDto {
@@ -613,6 +674,11 @@ export interface IAssignmentItemDto {
     [key: string]: any;
 }
 
+export enum AssignmentItemType {
+    Text = "Text",
+    Image = "Image",
+}
+
 export class CourseDto implements ICourseDto {
     id!: string;
     name!: string;
@@ -676,6 +742,66 @@ export interface ICourseDto {
     id: string;
     name: string;
     assignments: AssignmentDto[];
+
+    [key: string]: any;
+}
+
+export class CreateAssignmentItemRequest implements ICreateAssignmentItemRequest {
+    type!: AssignmentItemType;
+    name!: string;
+    text!: string | undefined;
+    imageUrl!: string | undefined;
+
+    [key: string]: any;
+
+    constructor(data?: ICreateAssignmentItemRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.type = _data["type"];
+            this.name = _data["name"];
+            this.text = _data["text"];
+            this.imageUrl = _data["imageUrl"];
+        }
+    }
+
+    static fromJS(data: any): CreateAssignmentItemRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new CreateAssignmentItemRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["type"] = this.type;
+        data["name"] = this.name;
+        data["text"] = this.text;
+        data["imageUrl"] = this.imageUrl;
+        return data;
+    }
+}
+
+export interface ICreateAssignmentItemRequest {
+    type: AssignmentItemType;
+    name: string;
+    text: string | undefined;
+    imageUrl: string | undefined;
 
     [key: string]: any;
 }
