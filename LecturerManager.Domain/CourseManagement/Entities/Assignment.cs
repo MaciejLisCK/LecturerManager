@@ -1,3 +1,4 @@
+using LecturerManager.Domain.CourseManagement.Exceptions;
 using LecturerManager.Domain.CourseManagement.ValueObjects;
 using LecturerManager.Domain.Shared;
 
@@ -36,5 +37,14 @@ public class Assignment : Entity<Guid>
         _assignmentItems.Add(assignmentImageItem);
 
         return assignmentImageItem.Id;
+    }
+
+    internal void RemoveItem(Guid itemId)
+    {
+        var item = _assignmentItems.SingleOrDefault(i => i.Id == itemId);
+        if (item is null)
+            throw new AssignmentItemNotFoundException(itemId);
+
+        _assignmentItems.Remove(item);
     }
 }

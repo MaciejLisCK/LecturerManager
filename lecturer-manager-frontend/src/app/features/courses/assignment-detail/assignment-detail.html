@@ -34,12 +34,22 @@
       <thead>
         <tr>
           <th>Nazwa elementu</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         @for (item of assignment.items; track item.id) {
           <tr>
             <td>{{ item.name }}</td>
+            <td class="text-end">
+              <button
+                class="btn btn-outline-danger btn-sm"
+                (click)="deleteItem(item.id)"
+                [attr.aria-label]="'Usuń element ' + item.name"
+              >
+                Usuń
+              </button>
+            </td>
           </tr>
         }
       </tbody>

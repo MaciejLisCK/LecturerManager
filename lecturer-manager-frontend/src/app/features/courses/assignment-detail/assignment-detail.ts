@@ -20,4 +20,9 @@ export class AssignmentDetail {
     params: () => ({ courseId: this.courseId(), assignmentId: this.assignmentId() }),
     loader: ({ params }) => firstValueFrom(this.client.getAssignmentById(params.courseId, params.assignmentId)),
   });
+
+  protected async deleteItem(itemId: string) {
+    await firstValueFrom(this.client.deleteAssignmentItem(this.courseId(), this.assignmentId(), itemId));
+    this.assignmentResource.reload();
+  }
 }

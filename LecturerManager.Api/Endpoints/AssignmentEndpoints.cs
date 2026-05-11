@@ -2,6 +2,7 @@ using LecturerManager.Api.Requests;
 using LecturerManager.Application.Features.CourseManagement.Commands.CreateAssignment;
 using LecturerManager.Application.Features.CourseManagement.Commands.CreateAssignmentItem;
 using LecturerManager.Application.Features.CourseManagement.Commands.DeleteAssignment;
+using LecturerManager.Application.Features.CourseManagement.Commands.DeleteAssignmentItem;
 using LecturerManager.Application.Features.CourseManagement.DTOs;
 using LecturerManager.Application.Features.CourseManagement.Queries.GetAssignmentById;
 using MediatR;
@@ -48,6 +49,15 @@ public static class AssignmentEndpoints
         .WithName("CreateAssignmentItem")
         .WithTags("Assignments")
         .Produces(StatusCodes.Status201Created);
+
+        app.MapDelete("/courses/{courseId:guid}/assignments/{assignmentId:guid}/items/{itemId:guid}", async (Guid courseId, Guid assignmentId, Guid itemId, ISender sender, CancellationToken cancellationToken) =>
+        {
+            await sender.Send(new DeleteAssignmentItemCommand(courseId, assignmentId, itemId), cancellationToken);
+            return Results.NoContent();
+        })
+        .WithName("DeleteAssignmentItem")
+        .WithTags("Assignments")
+        .Produces(StatusCodes.Status204NoContent);
 
         return app;
     }
