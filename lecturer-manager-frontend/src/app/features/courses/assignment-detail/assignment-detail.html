@@ -39,6 +39,7 @@
       <thead>
         <tr>
           <th>Nazwa elementu</th>
+          <th>Typ</th>
           <th></th>
         </tr>
       </thead>
@@ -46,6 +47,13 @@
         @for (item of assignment.items; track item.id) {
           <tr>
             <td>{{ item.name }}</td>
+            <td>
+              @if (item.itemType === 'Text') {
+                <span class="badge bg-secondary">Tekstowy</span>
+              } @else {
+                <span class="badge bg-info text-dark">Zdjęciowy</span>
+              }
+            </td>
             <td class="text-end">
               <button
                 class="btn btn-outline-danger btn-sm"

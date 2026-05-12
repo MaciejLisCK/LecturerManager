@@ -685,6 +685,7 @@ export interface IAssignmentDto {
 export class AssignmentItemDto implements IAssignmentItemDto {
     id!: string;
     name!: string;
+    itemType!: AssignmentItemType;
 
     [key: string]: any;
 
@@ -705,6 +706,7 @@ export class AssignmentItemDto implements IAssignmentItemDto {
             }
             this.id = _data["id"];
             this.name = _data["name"];
+            this.itemType = _data["itemType"];
         }
     }
 
@@ -723,6 +725,7 @@ export class AssignmentItemDto implements IAssignmentItemDto {
         }
         data["id"] = this.id;
         data["name"] = this.name;
+        data["itemType"] = this.itemType;
         return data;
     }
 }
@@ -730,6 +733,7 @@ export class AssignmentItemDto implements IAssignmentItemDto {
 export interface IAssignmentItemDto {
     id: string;
     name: string;
+    itemType: AssignmentItemType;
 
     [key: string]: any;
 }
@@ -809,8 +813,6 @@ export interface ICourseDto {
 export class CreateAssignmentItemRequest implements ICreateAssignmentItemRequest {
     type!: AssignmentItemType;
     name!: string;
-    text!: string | undefined;
-    imageUrl!: string | undefined;
 
     [key: string]: any;
 
@@ -831,8 +833,6 @@ export class CreateAssignmentItemRequest implements ICreateAssignmentItemRequest
             }
             this.type = _data["type"];
             this.name = _data["name"];
-            this.text = _data["text"];
-            this.imageUrl = _data["imageUrl"];
         }
     }
 
@@ -851,8 +851,6 @@ export class CreateAssignmentItemRequest implements ICreateAssignmentItemRequest
         }
         data["type"] = this.type;
         data["name"] = this.name;
-        data["text"] = this.text;
-        data["imageUrl"] = this.imageUrl;
         return data;
     }
 }
@@ -860,8 +858,6 @@ export class CreateAssignmentItemRequest implements ICreateAssignmentItemRequest
 export interface ICreateAssignmentItemRequest {
     type: AssignmentItemType;
     name: string;
-    text: string | undefined;
-    imageUrl: string | undefined;
 
     [key: string]: any;
 }

@@ -21,16 +21,11 @@ export class AddAssignmentItem {
   protected readonly AssignmentItemType = AssignmentItemType;
   protected itemType = signal<AssignmentItemType>(AssignmentItemType.Text);
   protected name = signal('');
-  protected text = signal('');
-  protected imageUrl = signal('');
   protected isSaving = signal(false);
   protected errorMessage = signal<string | null>(null);
 
   async onSubmit() {
     if (!this.name().trim()) return;
-    const type = this.itemType();
-    if (type === AssignmentItemType.Text && !this.text().trim()) return;
-    if (type === AssignmentItemType.Image && !this.imageUrl().trim()) return;
 
     this.isSaving.set(true);
     this.errorMessage.set(null);
@@ -40,10 +35,8 @@ export class AddAssignmentItem {
           this.courseId(),
           this.assignmentId(),
           new CreateAssignmentItemRequest({
-            type,
+            type: this.itemType(),
             name: this.name(),
-            text: type === AssignmentItemType.Text ? this.text() : undefined,
-            imageUrl: type === AssignmentItemType.Image ? this.imageUrl() : undefined,
           }),
         ),
       );

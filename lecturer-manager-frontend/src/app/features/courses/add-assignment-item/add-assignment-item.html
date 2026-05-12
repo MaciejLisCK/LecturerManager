@@ -51,45 +51,11 @@
         />
       </div>
 
-      @if (itemType() === AssignmentItemType.Text) {
-        <div class="mb-3">
-          <label for="itemText" class="form-label">Treść</label>
-          <textarea
-            id="itemText"
-            class="form-control"
-            [ngModel]="text()"
-            (ngModelChange)="text.set($event)"
-            name="text"
-            required
-            maxlength="5000"
-            rows="5"
-            placeholder="Wpisz treść elementu"
-            aria-required="true"
-          ></textarea>
-        </div>
-      } @else {
-        <div class="mb-3">
-          <label for="itemImageUrl" class="form-label">URL zdjęcia</label>
-          <input
-            id="itemImageUrl"
-            type="url"
-            class="form-control"
-            [ngModel]="imageUrl()"
-            (ngModelChange)="imageUrl.set($event)"
-            name="imageUrl"
-            required
-            maxlength="300"
-            placeholder="https://example.com/image.jpg"
-            aria-required="true"
-          />
-        </div>
-      }
-
       <div class="d-flex gap-2">
         <button
           type="submit"
           class="btn btn-primary"
-          [disabled]="isSaving() || !name().trim() || (itemType() === AssignmentItemType.Text && !text().trim()) || (itemType() === AssignmentItemType.Image && !imageUrl().trim())"
+          [disabled]="isSaving() || !name().trim()"
           aria-label="Zapisz element zadania"
         >
           @if (isSaving()) {
