@@ -32,26 +32,13 @@ public class Course : Entity<Guid>, IAggregateRoot
         return assignment.Id;
     }
 
-    public Guid AddAssignmentTextItem(Guid assignmentId, AssignmentItemName name, AssignmentTextItemText text)
+    public Guid AddAssignmentItem(Guid assignmentId, AssignmentItemName name, AssignmentItemType itemType)
     {
         var assignment = _assignments.SingleOrDefault(a => a.Id == assignmentId);
         if (assignment is null)
             throw new AssignmentNotFoundException(assignmentId);
 
-        var assignmentTextItemId = assignment.AddTextItem(name, text);
-
-        return assignmentTextItemId;
-    }
-
-    public Guid AddAssignmentImageItem(Guid assignmentId, AssignmentItemName name, ImageUrl imageUrl)
-    {
-        var assignment = _assignments.SingleOrDefault(a => a.Id == assignmentId);
-        if (assignment is null)
-            throw new AssignmentNotFoundException(assignmentId);
-
-        var assignmentImageItemId = assignment.AddImageItem(name, imageUrl);
-
-        return assignmentImageItemId;
+        return assignment.AddItem(name, itemType);
     }
 
     public void RemoveAssignment(Guid assignmentId)

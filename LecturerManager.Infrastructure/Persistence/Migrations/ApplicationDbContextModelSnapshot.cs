@@ -25,7 +25,6 @@ namespace LecturerManager.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("LecturerManager.Domain.CourseManagement.Entities.Assignment", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
@@ -43,7 +42,6 @@ namespace LecturerManager.Infrastructure.Persistence.Migrations
             modelBuilder.Entity("LecturerManager.Domain.CourseManagement.Entities.AssignmentItem", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
@@ -51,10 +49,9 @@ namespace LecturerManager.Infrastructure.Persistence.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("assignment_id");
 
-                    b.Property<string>("item_type")
+                    b.Property<string>("ItemType")
                         .IsRequired()
-                        .HasMaxLength(21)
-                        .HasColumnType("nvarchar(21)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("item_type");
 
                     b.HasKey("Id");
@@ -62,16 +59,11 @@ namespace LecturerManager.Infrastructure.Persistence.Migrations
                     b.HasIndex("AssignmentId");
 
                     b.ToTable("assii_assignment_item");
-
-                    b.HasDiscriminator<string>("item_type").HasValue("AssignmentItem");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("LecturerManager.Domain.CourseManagement.Entities.Course", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
@@ -80,23 +72,58 @@ namespace LecturerManager.Infrastructure.Persistence.Migrations
                     b.ToTable("courx_course");
                 });
 
-            modelBuilder.Entity("LecturerManager.Domain.CourseManagement.Entities.AssignmentImageItem", b =>
+            modelBuilder.Entity("LecturerManager.Domain.Submissions.Entities.AssignmentItemSubmission", b =>
                 {
-                    b.HasBaseType("LecturerManager.Domain.CourseManagement.Entities.AssignmentItem");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("AssignmentItemId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("assignment_item_id");
+
+                    b.Property<string>("submission_type")
+                        .IsRequired()
+                        .HasMaxLength(34)
+                        .HasColumnType("nvarchar(34)")
+                        .HasColumnName("submission_type");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("asisu_assignment_item_submission");
+
+                    b.HasDiscriminator<string>("submission_type").HasValue("AssignmentItemSubmission");
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("LecturerManager.Domain.Submissions.Entities.ImageAssignmentItemSubmission", b =>
+                {
+                    b.HasBaseType("LecturerManager.Domain.Submissions.Entities.AssignmentItemSubmission");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("image_url");
 
                     b.HasDiscriminator().HasValue("image");
                 });
 
-            modelBuilder.Entity("LecturerManager.Domain.CourseManagement.Entities.AssignmentTextItem", b =>
+            modelBuilder.Entity("LecturerManager.Domain.Submissions.Entities.TextAssignmentItemSubmission", b =>
                 {
-                    b.HasBaseType("LecturerManager.Domain.CourseManagement.Entities.AssignmentItem");
+                    b.HasBaseType("LecturerManager.Domain.Submissions.Entities.AssignmentItemSubmission");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("text");
 
                     b.HasDiscriminator().HasValue("text");
                 });
 
             modelBuilder.Entity("LecturerManager.Domain.CourseManagement.Entities.Assignment", b =>
                 {
-                    b.HasOne("LecturerManager.Domain.CourseManagement.Entities.Course", "Course")
+                    b.HasOne("LecturerManager.Domain.CourseManagement.Entities.Course", null)
                         .WithMany("Assignments")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -119,8 +146,6 @@ namespace LecturerManager.Infrastructure.Persistence.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("AssignmentId");
                         });
-
-                    b.Navigation("Course");
 
                     b.Navigation("Name")
                         .IsRequired();
@@ -175,54 +200,6 @@ namespace LecturerManager.Infrastructure.Persistence.Migrations
                         });
 
                     b.Navigation("Name")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("LecturerManager.Domain.CourseManagement.Entities.AssignmentImageItem", b =>
-                {
-                    b.OwnsOne("LecturerManager.Domain.CourseManagement.ValueObjects.ImageUrl", "ImageUrl", b1 =>
-                        {
-                            b1.Property<Guid>("AssignmentImageItemId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)")
-                                .HasColumnName("ImageUrl");
-
-                            b1.HasKey("AssignmentImageItemId");
-
-                            b1.ToTable("assii_assignment_item");
-
-                            b1.WithOwner()
-                                .HasForeignKey("AssignmentImageItemId");
-                        });
-
-                    b.Navigation("ImageUrl")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("LecturerManager.Domain.CourseManagement.Entities.AssignmentTextItem", b =>
-                {
-                    b.OwnsOne("LecturerManager.Domain.CourseManagement.ValueObjects.AssignmentTextItemText", "Text", b1 =>
-                        {
-                            b1.Property<Guid>("AssignmentTextItemId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)")
-                                .HasColumnName("Text");
-
-                            b1.HasKey("AssignmentTextItemId");
-
-                            b1.ToTable("assii_assignment_item");
-
-                            b1.WithOwner()
-                                .HasForeignKey("AssignmentTextItemId");
-                        });
-
-                    b.Navigation("Text")
                         .IsRequired();
                 });
 

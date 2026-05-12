@@ -1,6 +1,6 @@
-using LecturerManager.Application.Features.CourseManagement.Commands.CreateAssignmentItem;
+using LecturerManager.Domain.CourseManagement.ValueObjects;
 
 namespace LecturerManager.Api.Requests;
 
 public record CreateAssignmentRequest(string Name);
-public record CreateAssignmentItemRequest(AssignmentItemType Type, string Name, string? Text, string? ImageUrl);
+public record CreateAssignmentItemRequest(AssignmentItemType Type, string Name);

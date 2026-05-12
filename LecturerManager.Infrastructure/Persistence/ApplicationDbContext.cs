@@ -1,4 +1,5 @@
 using LecturerManager.Domain.CourseManagement.Entities;
+using LecturerManager.Domain.Submissions.Entities;
 using LecturerManager.Infrastructure.Persistence.Extensions;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,6 +8,7 @@ namespace LecturerManager.Infrastructure.Persistence;
 public class ApplicationDbContext : DbContext
 {
 	public DbSet<Course> Courses => Set<Course>();
+	public DbSet<AssignmentItemSubmission> AssignmentItemSubmissions => Set<AssignmentItemSubmission>();
 
 	public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
 		: base(options)

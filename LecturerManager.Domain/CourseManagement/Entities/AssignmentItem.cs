@@ -5,13 +5,15 @@ namespace LecturerManager.Domain.CourseManagement.Entities;
 
 public class AssignmentItem : Entity<Guid>
 {
-    public AssignmentItemName Name { get; private set; }
+    public AssignmentItemName Name { get; private set; } = null!;
+    public AssignmentItemType ItemType { get; private set; }
 
-    protected AssignmentItem() { }
+    private AssignmentItem() { }
 
-    public AssignmentItem(AssignmentItemName name)
+    public AssignmentItem(AssignmentItemName name, AssignmentItemType itemType)
     {
         Id = Guid.NewGuid();
         Name = name;
+        ItemType = itemType;
     }
 }

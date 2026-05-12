@@ -11,10 +11,8 @@ public class AssignmentItemConfiguration : IEntityTypeConfiguration<AssignmentIt
         builder.Property(x => x.Id)
             .ValueGeneratedNever();
 
-        builder
-            .HasDiscriminator<string>("item_type")
-            .HasValue<AssignmentTextItem>("text")
-            .HasValue<AssignmentImageItem>("image");
+        builder.Property(x => x.ItemType)
+            .HasConversion<string>();
 
         builder
             .OwnsOne(x => x.Name, modelBuilder =>

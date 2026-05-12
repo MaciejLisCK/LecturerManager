@@ -18,15 +18,5 @@ public class CreateAssignmentItemValidator : AbstractValidator<CreateAssignmentI
         RuleFor(x => x.Name)
             .NotEmpty()
             .MaximumLength(300);
-
-        RuleFor(x => x.Text)
-            .NotEmpty()
-            .MaximumLength(5000)
-            .When(x => x.Type == AssignmentItemType.Text);
-
-        RuleFor(x => x.ImageUrl)
-            .NotEmpty()
-            .MaximumLength(300)
-            .When(x => x.Type == AssignmentItemType.Image);
     }
 }

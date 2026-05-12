@@ -7,7 +7,7 @@ namespace LecturerManager.Domain.CourseManagement.Entities;
 public class Assignment : Entity<Guid>
 {
     public Guid CourseId { get; init; }
-    public AssignmentName Name { get; private set; }
+    public AssignmentName Name { get; private set; } = null!;
 
     private readonly List<AssignmentItem> _assignmentItems = [];
     public IReadOnlyList<AssignmentItem> AssignmentItems => _assignmentItems.AsReadOnly();
@@ -21,22 +21,11 @@ public class Assignment : Entity<Guid>
         Name = name;
     }
 
-    internal Guid AddTextItem(AssignmentItemName name, AssignmentTextItemText text)
+    internal Guid AddItem(AssignmentItemName name, AssignmentItemType itemType)
     {
-        var assignmentTextItem = new AssignmentTextItem(name, text);
-        
-        _assignmentItems.Add(assignmentTextItem);
-
-        return assignmentTextItem.Id;
-    }
-
-    internal Guid AddImageItem(AssignmentItemName name, ImageUrl imageUrl)
-    {
-        var assignmentImageItem = new AssignmentImageItem(name, imageUrl);
-
-        _assignmentItems.Add(assignmentImageItem);
-
-        return assignmentImageItem.Id;
+        var item = new AssignmentItem(name, itemType);
+        _assignmentItems.Add(item);
+        return item.Id;
     }
 
     internal void RemoveItem(Guid itemId)

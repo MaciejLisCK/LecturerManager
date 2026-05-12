@@ -1,5 +1,6 @@
 using LecturerManager.Domain.CourseManagement.Interfaces;
 using LecturerManager.Domain.Shared.Interfaces;
+using LecturerManager.Domain.Submissions.Interfaces;
 using LecturerManager.Infrastructure.Persistence;
 using LecturerManager.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +24,7 @@ public static class InfrastructureServiceExtensions
             options.AddInterceptors(sp.GetRequiredService<DomainEventPublishingInterceptor>());
         });
         services.AddScoped<ICourseRepository, CourseRepository>();
+        services.AddScoped<ISubmissionRepository, SubmissionRepository>();
         services.AddScoped<IUnitOfWork, EfUnitOfWork>();
 
         return services;

@@ -15,20 +15,10 @@ public class CreateAssignmentItemHandler(ICourseRepository courseRepository, IUn
         if (course is null)
             throw new CourseNotFoundException(request.CourseId);
 
-        var itemName = new AssignmentItemName(request.Name);
-
-        var itemId = request.Type switch
-        {
-            AssignmentItemType.Text => course.AddAssignmentTextItem(
-                request.AssignmentId,
-                itemName,
-                new AssignmentTextItemText(request.Text!)),
-            AssignmentItemType.Image => course.AddAssignmentImageItem(
-                request.AssignmentId,
-                itemName,
-                new ImageUrl(request.ImageUrl!)),
-            _ => throw new ArgumentException($"Unsupported item type: {request.Type}")
-        };
+        var itemId = course.AddAssignmentItem(
+            request.AssignmentId,
+            new AssignmentItemName(request.Name),
+            request.Type);
 
         await unitOfWork.SaveChangesAsync(cancellationToken);
 

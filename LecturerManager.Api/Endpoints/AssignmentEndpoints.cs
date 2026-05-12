@@ -43,7 +43,7 @@ public static class AssignmentEndpoints
 
         app.MapPost("/courses/{courseId:guid}/assignments/{assignmentId:guid}/items", async (Guid courseId, Guid assignmentId, CreateAssignmentItemRequest body, ISender sender, CancellationToken cancellationToken) =>
         {
-            var id = await sender.Send(new CreateAssignmentItemCommand(courseId, assignmentId, body.Type, body.Name, body.Text, body.ImageUrl), cancellationToken);
+            var id = await sender.Send(new CreateAssignmentItemCommand(courseId, assignmentId, body.Type, body.Name), cancellationToken);
             return Results.Created($"/courses/{courseId}/assignments/{assignmentId}/items/{id}", new { id });
         })
         .WithName("CreateAssignmentItem")
