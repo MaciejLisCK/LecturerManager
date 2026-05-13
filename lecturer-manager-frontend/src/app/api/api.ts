@@ -51,6 +51,14 @@ export interface IClient {
      * @return No Content
      */
     deleteAssignmentItem(courseId: string, assignmentId: string, itemId: string): Observable<void>;
+    /**
+     * @return OK
+     */
+    getPublicKey(): Observable<any>;
+    /**
+     * @return Created
+     */
+    registerStudent(body: RegisterStudentCommand): Observable<void>;
 }
 
 @Injectable()
@@ -561,6 +569,117 @@ export class Client implements IClient {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @return OK
+     */
+    getPublicKey(): Observable<any> {
+        let url_ = this.baseUrl + "/auth/public-key";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ : any = {
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGetPublicKey(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGetPublicKey(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<any>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<any>;
+        }));
+    }
+
+    protected processGetPublicKey(response: HttpResponseBase): Observable<any> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = resultData200 !== undefined ? resultData200 : null as any;
+    
+            return _observableOf(result200);
+            }));
+        } else if (status === 500) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("Internal Server Error", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return Created
+     */
+    registerStudent(body: RegisterStudentCommand): Observable<void> {
+        let url_ = this.baseUrl + "/auth/register";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processRegisterStudent(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processRegisterStudent(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processRegisterStudent(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 201) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("Bad Request", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 export class AssignmentDetailDto implements IAssignmentDetailDto {
@@ -954,6 +1073,74 @@ export class CreateCourseCommand implements ICreateCourseCommand {
 
 export interface ICreateCourseCommand {
     name: string;
+
+    [key: string]: any;
+}
+
+export class RegisterStudentCommand implements IRegisterStudentCommand {
+    login!: string;
+    password!: string;
+    encryptedFirstName!: string;
+    encryptedLastName!: string;
+    encryptedStudentIndex!: string;
+    encryptedEmail!: string;
+
+    [key: string]: any;
+
+    constructor(data?: IRegisterStudentCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.login = _data["login"];
+            this.password = _data["password"];
+            this.encryptedFirstName = _data["encryptedFirstName"];
+            this.encryptedLastName = _data["encryptedLastName"];
+            this.encryptedStudentIndex = _data["encryptedStudentIndex"];
+            this.encryptedEmail = _data["encryptedEmail"];
+        }
+    }
+
+    static fromJS(data: any): RegisterStudentCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new RegisterStudentCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["login"] = this.login;
+        data["password"] = this.password;
+        data["encryptedFirstName"] = this.encryptedFirstName;
+        data["encryptedLastName"] = this.encryptedLastName;
+        data["encryptedStudentIndex"] = this.encryptedStudentIndex;
+        data["encryptedEmail"] = this.encryptedEmail;
+        return data;
+    }
+}
+
+export interface IRegisterStudentCommand {
+    login: string;
+    password: string;
+    encryptedFirstName: string;
+    encryptedLastName: string;
+    encryptedStudentIndex: string;
+    encryptedEmail: string;
 
     [key: string]: any;
 }

@@ -1,0 +1,142 @@
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <h2 class="mb-4">Rejestracja studenta</h2>
+
+    @if (errorMessage()) {
+      <div class="alert alert-danger" role="alert">{{ errorMessage() }}</div>
+    }
+
+    @if (successMessage()) {
+      <div class="alert alert-success" role="alert">
+        {{ successMessage() }}
+        <div class="mt-2">
+          <a routerLink="/login" class="alert-link">Przejdź do logowania</a>
+        </div>
+      </div>
+    }
+
+    @if (!successMessage()) {
+      <form (ngSubmit)="onSubmit()" #registerForm="ngForm" novalidate>
+        <div class="mb-3">
+          <label for="login" class="form-label">Login</label>
+          <input
+            id="login"
+            type="text"
+            class="form-control"
+            [ngModel]="login()"
+            (ngModelChange)="login.set($event)"
+            name="login"
+            required
+            maxlength="100"
+            placeholder="Wpisz login"
+            aria-required="true"
+            autocomplete="username"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label">Hasło</label>
+          <input
+            id="password"
+            type="password"
+            class="form-control"
+            [ngModel]="password()"
+            (ngModelChange)="password.set($event)"
+            name="password"
+            required
+            minlength="8"
+            maxlength="200"
+            placeholder="Minimum 8 znaków"
+            aria-required="true"
+            autocomplete="new-password"
+          />
+        </div>
+
+        <hr class="my-3" />
+        <p class="text-muted small mb-3">
+          Dane osobowe zostaną zaszyfrowane w przeglądarce przed wysłaniem.
+        </p>
+
+        <div class="mb-3">
+          <label for="firstName" class="form-label">Imię</label>
+          <input
+            id="firstName"
+            type="text"
+            class="form-control"
+            [ngModel]="firstName()"
+            (ngModelChange)="firstName.set($event)"
+            name="firstName"
+            required
+            placeholder="Wpisz imię"
+            aria-required="true"
+            autocomplete="given-name"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="lastName" class="form-label">Nazwisko</label>
+          <input
+            id="lastName"
+            type="text"
+            class="form-control"
+            [ngModel]="lastName()"
+            (ngModelChange)="lastName.set($event)"
+            name="lastName"
+            required
+            placeholder="Wpisz nazwisko"
+            aria-required="true"
+            autocomplete="family-name"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="studentIndex" class="form-label">Numer indeksu</label>
+          <input
+            id="studentIndex"
+            type="text"
+            class="form-control"
+            [ngModel]="studentIndex()"
+            (ngModelChange)="studentIndex.set($event)"
+            name="studentIndex"
+            required
+            placeholder="np. 123456"
+            aria-required="true"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input
+            id="email"
+            type="email"
+            class="form-control"
+            [ngModel]="email()"
+            (ngModelChange)="email.set($event)"
+            name="email"
+            required
+            placeholder="Wpisz adres email"
+            aria-required="true"
+            autocomplete="email"
+          />
+        </div>
+
+        <div class="d-flex gap-2 mt-4">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="isSaving() || !login().trim() || !password().trim() || !firstName().trim() || !lastName().trim() || !studentIndex().trim() || !email().trim()"
+            aria-label="Zarejestruj się"
+          >
+            @if (isSaving()) {
+              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Rejestrowanie…
+            } @else {
+              Zarejestruj się
+            }
+          </button>
+          <a routerLink="/login" class="btn btn-outline-secondary" aria-label="Anuluj i przejdź do logowania">Anuluj</a>
+        </div>
+      </form>
+    }
+  </div>
+</div>

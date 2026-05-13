@@ -26,7 +26,7 @@ Przed każdym zadaniem AI powinien przeczytać `AGENTS.md` i odpowiednie pliki k
 ### Użytkownicy: nauczyciel i studenci
 
 - [x] Encja `User` (login, hash hasła, poszczególne pola danych osobowych zaszyfrowane osobno (będą szyfrowane a potem kodowane base64 na frontendzie): imię, nazwisko, indeks, email). Konto nauczyciela hardcodowane (brak rejestracji nauczyciela).
-- [ ] Rejestracja studenta: strona rejestracji z formularzem (signal forms). Szyfrowanie danych osobowych: każde pole (imię, nazwisko, indeks, email) szyfrowane osobno algorytmem RSA-OAEP (SHA-256, klucz 2048-bit) kluczem publicznym przez Web Crypto API przed wysłaniem; wynik kodowany jako Base64; backend przechowuje zaszyfrowane pola jako tekst.
+- [x] Rejestracja studenta: strona rejestracji z formularzem (signal forms). Szyfrowanie danych osobowych: każde pole (imię, nazwisko, indeks, email) szyfrowane osobno algorytmem RSA-OAEP (SHA-256, klucz 2048-bit) kluczem publicznym przez Web Crypto API przed wysłaniem; wynik kodowany jako Base64; backend przechowuje zaszyfrowane pola jako tekst.
 - [ ] Logowanie studenta: endpoint logowania zwracający JWT z rolą; strona logowania.
 - [ ] Logowanie nauczyciela: pozwól na logowanie się nauczyciela, konto nauczyciela jest tylko jedno, zaproponuj użytkownikowi opcję jak to zrobić i daj mu zdecydować którą opcję chce.
 - [ ] Routing i autoryzacja: route guards dla ról (`teacher`, `student`), routing `/teacher/...` i `/student/...`, przeniesienie istniejących widoków do panelu nauczyciela.

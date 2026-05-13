@@ -1,6 +1,7 @@
 using LecturerManager.Application.DependencyInjection;
 using LecturerManager.Application.Features.CourseManagement.Queries.GetCourses;
 using LecturerManager.Domain.CourseManagement.Exceptions;
+using LecturerManager.Domain.Identity.Exceptions;
 using LecturerManager.Domain.Shared.Exceptions;
 using LecturerManager.Infrastructure.DependencyInjection;
 using MediatR;
@@ -43,6 +44,7 @@ app.UseExceptionHandler(options =>
         {
             CourseNotFoundException => StatusCodes.Status404NotFound,
             AssignmentNotFoundException => StatusCodes.Status404NotFound,
+            LoginAlreadyExistsException => StatusCodes.Status409Conflict,
             DomainException => StatusCodes.Status400BadRequest,
             ValidationException => StatusCodes.Status400BadRequest,
             _ => StatusCodes.Status500InternalServerError
@@ -67,5 +69,6 @@ if (app.Environment.IsDevelopment())
 
 app.MapCourseEndpoints();
 app.MapAssignmentEndpoints();
+app.MapAuthEndpoints();
 
 app.Run();

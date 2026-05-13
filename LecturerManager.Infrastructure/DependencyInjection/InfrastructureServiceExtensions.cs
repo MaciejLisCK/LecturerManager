@@ -1,8 +1,10 @@
+using LecturerManager.Application.Common.Interfaces;
 using LecturerManager.Domain.CourseManagement.Interfaces;
 using LecturerManager.Domain.Identity.Interfaces;
 using LecturerManager.Domain.Shared.Interfaces;
 using LecturerManager.Domain.Submissions.Interfaces;
 using LecturerManager.Infrastructure.Persistence;
+using LecturerManager.Infrastructure.Persistence.Services;
 using LecturerManager.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +30,7 @@ public static class InfrastructureServiceExtensions
         services.AddScoped<ISubmissionRepository, SubmissionRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUnitOfWork, EfUnitOfWork>();
+        services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();
 
         return services;
     }
