@@ -1,4 +1,5 @@
 using LecturerManager.Domain.CourseManagement.Interfaces;
+using LecturerManager.Domain.Identity.Interfaces;
 using LecturerManager.Domain.Shared.Interfaces;
 using LecturerManager.Domain.Submissions.Interfaces;
 using LecturerManager.Infrastructure.Persistence;
@@ -25,6 +26,7 @@ public static class InfrastructureServiceExtensions
         });
         services.AddScoped<ICourseRepository, CourseRepository>();
         services.AddScoped<ISubmissionRepository, SubmissionRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUnitOfWork, EfUnitOfWork>();
 
         return services;
