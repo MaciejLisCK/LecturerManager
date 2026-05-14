@@ -1,3 +1,4 @@
+using LecturerManager.Application.Features.Identity.Commands.LoginStudent;
 using LecturerManager.Application.Features.Identity.Commands.RegisterStudent;
 using MediatR;
 
@@ -28,6 +29,17 @@ public static class AuthEndpoints
         .WithTags("Auth")
         .Produces(StatusCodes.Status201Created)
         .Produces(StatusCodes.Status400BadRequest);
+
+        app.MapPost("/auth/login/student", async (LoginStudentCommand command, ISender sender, CancellationToken cancellationToken) =>
+        {
+            var response = await sender.Send(command, cancellationToken);
+            return Results.Ok(response);
+        })
+        .WithName("LoginStudent")
+        .WithTags("Auth")
+        .Produces<LoginStudentResponse>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status400BadRequest)
+        .Produces(StatusCodes.Status401Unauthorized);
 
         return app;
     }

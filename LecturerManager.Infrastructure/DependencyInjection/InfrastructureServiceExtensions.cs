@@ -31,6 +31,15 @@ public static class InfrastructureServiceExtensions
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUnitOfWork, EfUnitOfWork>();
         services.AddScoped<IPasswordHasher, BcryptPasswordHasher>();
+        services.Configure<JwtOptions>(opts =>
+        {
+            opts.Key = configuration["Jwt:Key"] ?? string.Empty;
+            opts.Issuer = configuration["Jwt:Issuer"] ?? string.Empty;
+            opts.Audience = configuration["Jwt:Audience"] ?? string.Empty;
+            if (int.TryParse(configuration["Jwt:ExpiresInMinutes"], out var minutes))
+                opts.ExpiresInMinutes = minutes;
+        });
+        services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 
         return services;
     }

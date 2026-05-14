@@ -59,6 +59,10 @@ export interface IClient {
      * @return Created
      */
     registerStudent(body: RegisterStudentCommand): Observable<void>;
+    /**
+     * @return OK
+     */
+    loginStudent(body: LoginStudentCommand): Observable<LoginStudentResponse>;
 }
 
 @Injectable()
@@ -680,6 +684,69 @@ export class Client implements IClient {
         }
         return _observableOf(null as any);
     }
+
+    /**
+     * @return OK
+     */
+    loginStudent(body: LoginStudentCommand): Observable<LoginStudentResponse> {
+        let url_ = this.baseUrl + "/auth/login/student";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processLoginStudent(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processLoginStudent(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<LoginStudentResponse>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<LoginStudentResponse>;
+        }));
+    }
+
+    protected processLoginStudent(response: HttpResponseBase): Observable<LoginStudentResponse> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = LoginStudentResponse.fromJS(resultData200);
+            return _observableOf(result200);
+            }));
+        } else if (status === 400) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("Bad Request", status, _responseText, _headers);
+            }));
+        } else if (status === 401) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("Unauthorized", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
 }
 
 export class AssignmentDetailDto implements IAssignmentDetailDto {
@@ -1073,6 +1140,110 @@ export class CreateCourseCommand implements ICreateCourseCommand {
 
 export interface ICreateCourseCommand {
     name: string;
+
+    [key: string]: any;
+}
+
+export class LoginStudentCommand implements ILoginStudentCommand {
+    login!: string;
+    password!: string;
+
+    [key: string]: any;
+
+    constructor(data?: ILoginStudentCommand) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.login = _data["login"];
+            this.password = _data["password"];
+        }
+    }
+
+    static fromJS(data: any): LoginStudentCommand {
+        data = typeof data === 'object' ? data : {};
+        let result = new LoginStudentCommand();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["login"] = this.login;
+        data["password"] = this.password;
+        return data;
+    }
+}
+
+export interface ILoginStudentCommand {
+    login: string;
+    password: string;
+
+    [key: string]: any;
+}
+
+export class LoginStudentResponse implements ILoginStudentResponse {
+    accessToken!: string;
+    role!: string;
+
+    [key: string]: any;
+
+    constructor(data?: ILoginStudentResponse) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (this as any)[property] = (data as any)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            for (var property in _data) {
+                if (_data.hasOwnProperty(property))
+                    this[property] = _data[property];
+            }
+            this.accessToken = _data["accessToken"];
+            this.role = _data["role"];
+        }
+    }
+
+    static fromJS(data: any): LoginStudentResponse {
+        data = typeof data === 'object' ? data : {};
+        let result = new LoginStudentResponse();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        for (var property in this) {
+            if (this.hasOwnProperty(property))
+                data[property] = this[property];
+        }
+        data["accessToken"] = this.accessToken;
+        data["role"] = this.role;
+        return data;
+    }
+}
+
+export interface ILoginStudentResponse {
+    accessToken: string;
+    role: string;
 
     [key: string]: any;
 }

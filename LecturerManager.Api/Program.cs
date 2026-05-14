@@ -7,6 +7,7 @@ using LecturerManager.Infrastructure.DependencyInjection;
 using MediatR;
 using Microsoft.AspNetCore.Diagnostics;
 using FluentValidation;
+using LecturerManager.Api.DependencyInjection;
 using LecturerManager.Api.Endpoints;
 using System.Text.Json.Serialization;
 
@@ -20,6 +21,8 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
+builder.Services.AddJwtAuthentication(builder.Configuration);
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular",
@@ -45,6 +48,7 @@ app.UseExceptionHandler(options =>
             CourseNotFoundException => StatusCodes.Status404NotFound,
             AssignmentNotFoundException => StatusCodes.Status404NotFound,
             LoginAlreadyExistsException => StatusCodes.Status409Conflict,
+            InvalidCredentialsException => StatusCodes.Status401Unauthorized,
             DomainException => StatusCodes.Status400BadRequest,
             ValidationException => StatusCodes.Status400BadRequest,
             _ => StatusCodes.Status500InternalServerError
@@ -61,6 +65,8 @@ app.UseExceptionHandler(options =>
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAngular");
+app.UseAuthentication();
+app.UseAuthorization();
 
 if (app.Environment.IsDevelopment())
 {
